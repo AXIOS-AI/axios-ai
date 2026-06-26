@@ -225,7 +225,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
       rgba(13, 20, 15, 0.32) 42%,
       rgba(13, 20, 15, 0.86) 76%,
       rgba(13, 20, 15, 0.97) 100%),
-    url("assets/img/hero-cover.jpg");
+    url("../img/hero-cover.jpg");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
