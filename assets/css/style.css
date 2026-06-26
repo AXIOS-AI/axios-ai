@@ -227,7 +227,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
       rgba(13, 20, 15, 0.97) 100%),
     url("../img/hero-cover.jpg");
   background-size: cover;
-  background-position: center center;
+  background-position: center top;
   background-repeat: no-repeat;
   min-height: clamp(480px, 78vw, 680px);
   display: flex;
