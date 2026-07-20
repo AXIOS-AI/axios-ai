@@ -221,11 +221,11 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   overflow: hidden;
   background-image:
     linear-gradient(180deg,
-      rgba(13, 20, 15, 0.15) 0%,
-      rgba(13, 20, 15, 0.15) 38%,
-      rgba(13, 20, 15, 0.45) 48%,
-      rgba(13, 20, 15, 0.86) 76%,
-      rgba(13, 20, 15, 0.97) 100%),
+      rgba(13, 20, 15, 0.40) 0%,
+      rgba(13, 20, 15, 0.55) 30%,
+      rgba(13, 20, 15, 0.68) 50%,
+      rgba(13, 20, 15, 0.82) 70%,
+      rgba(13, 20, 15, 0.93) 100%),
     url("../img/hero-cover.jpg");
   background-size: cover;
   background-position: center top;
@@ -314,6 +314,13 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
 .section { padding: 64px 0; }
 .section--soft { background: var(--color-bg-soft); }
 .section--paper { background: var(--color-paper); }
+.section--paper .container p,
+.section--paper .container h1,
+.section--paper .container h2,
+.section--paper .container h3,
+.section--paper .container .lead,
+.section--paper .container .callout { text-align: center; }
+.section--paper .container .callout { max-width: 640px; margin-left: auto; margin-right: auto; }
 .section-head { max-width: 680px; margin-bottom: 2.2em; }
 
 .reveal { opacity: 0; transform: translateY(14px); transition: opacity .55s ease, transform .55s ease; }
