@@ -234,6 +234,9 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   align-items: flex-end;
   padding: 64px 0 56px;
 }
+@media (max-width: 600px) {
+  .hero { align-items: flex-end; padding: 160px 0 40px; }
+}
 
 .hero__seal {
   position: absolute;
@@ -275,9 +278,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
 
 .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 1.6em; }
 
-@media (max-width: 600px) {
-  .hero { align-items: flex-end; padding-bottom: 40px; }
-}
+
 
 /* ---------------------------------------------------------------- */
 /* Page hero — pagine interne                                       */
