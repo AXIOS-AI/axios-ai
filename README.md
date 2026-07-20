@@ -102,3 +102,4 @@ Per sostituire la foto in futuro, basta rimpiazzare il file
 `.hero` dentro `assets/css/style.css`.
 
 
+
