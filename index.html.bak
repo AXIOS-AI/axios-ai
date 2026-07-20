@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AXIOS AI — Assistente AI per la Farmacia · AXIOS AI</title>
+<meta name="description" content="AXIOS AI è gratis. Assistente AI agentico che si modella sulla farmacia, lavora su copia mirror del gestionale. Investi nelle persone, non in licenze.">
+<meta property="og:title" content="AXIOS AI — Assistente AI per la Farmacia · AXIOS AI">
+<meta property="og:description" content="AXIOS AI è gratis. Assistente AI agentico che si modella sulla farmacia, lavora su copia mirror del gestionale. Investi nelle persone, non in licenze.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAACY0lEQVR4nO1bu3XDMAwE/VLZReqMoayRLbxBJskG2cJrWGOodhG1SuFHP1rmBwABUZR4XSwawB0BmGJIAwQcP7qJMr4UxqE32LHJgbWQDiElxiH2sHbyAGkOXnW2QNwHXza8fKBJfvy5XjDjjt+fX2oxzER4+kOaPJZwCtKCuCKoCBAijiWS+/2kfZ8AEuTngYsFrGDXimAA8slrEdf2Mw69yRbADUqzeWn4zBKgBHHpGMahN6ZW8lKxkAXgOPz77alxPXA6dyoxWUSXwpKONOHGQl17oAXgks+Zfcr3uSKQMmDuaG3gxIYSwCq6ZvIWNkZsFiSbYC55XwrHGht1fAjYuMklQEFu/Uvb8SEqgEbqp2aTM9s+YEtBNQNqQFCAmhpfCJgsUMsA6brV6gNeAbYw+xapLFi0B2AbnFQjxKA1QQ2jWvWqYfdFgC3Vv0WsD7xJOcHMjsQMujYkekXrAaUDKI0mQOkASmP3Aoj9CpzOXbDL53RrDZsudp8BTYD5B9RNRQvNbatcf7HVrXoG5Naq9pthK4HSAZSGVwBqH1i6/il+U2+3LQNCD7i/Bi6kGhjXDmZvo2VA7CEmC0rVf8r/Kv43WAOSAnB7gfQChmKPsq+JygCJhrgUqJu65BJwRShd/xY2Ds4EoQXIOYi0BLhnmEgZsFYRzG1a5pjc3IHr2IXWG5zPbg55AIAD5YKRz1FIhCXg+p7eDeuoLHtP0Do0t+liA+EEwUEu8SdbAO24/N3Yni9MPAzv+coMQLs0dXe252tzjwD2fHHSxVaEiK114kdlGYuktSHFgUSwloygTNw/RzChNttOXY0AAAAASUVORK5CYII=">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&amp;family=Archivo:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header__bar">
+      <a class="brand" href="index.html">
+        <svg class="brand__mark" viewBox="0 0 40 40" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="20" cy="20" r="17.5" stroke-width="1.3"/><circle cx="20" cy="20" r="13" stroke-width="0.9"/><text x="20" y="25.5" text-anchor="middle" font-family="Georgia, serif" font-size="14" fill="currentColor" stroke="none">A</text></svg>
+        <span class="brand__word">ΑΞΙΟΣ AI<small>Assistente AI per la Farmacia</small></span>
+      </a>
+      <button class="nav-toggle" aria-label="Apri il menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <nav class="site-nav">
+        <ul class="site-nav__list">
+          <li><a href="index.html" aria-current="page">Home</a></li>
+          <li><a href="filosofia.html">Filosofia</a></li>
+          <li><a href="compatibilita.html">Compatibilità</a></li>
+          <li><a href="chatbox.html">Chatbox</a></li>
+          <li><a href="ecosistema.html">Ecosistema</a></li>
+          <li><a href="privacy.html">Privacy & dati</a></li>
+          <li><a href="requisiti.html">Requisiti</a></li>
+          <li><a href="guida-uso.html">Guida all'uso</a></li>
+          <li><a href="sicurezza.html">Sicurezza</a></li>
+          <li><a href="progetto-libero.html">Progetto libero</a></li>
+          <li><a href="contatti.html">Contatti</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <section class="hero">
+    <div class="container">
+      <div class="hero__inner">
+        <p class="eyebrow on-dark">Assistente AI per la farmacia</p>
+        <h1>Restituire valore al <em>farmacista</em>, non alla macchina.</h1>
+        <p class="lead" style="color:rgba(246,242,230,.88)">AXIOS AI è gratis. Non esiste un modello unico per tutte le farmacie: è un assistente AI agentico che si modella sulla farmacia e su chi ci lavora, configurato dal farmacista sulla propria attività — e chiunque ne faccia parte va integrato nel sistema. Lavora su una copia mirror del gestionale — non tocca mai dati e infrastruttura del gestionale reale.
+AXIOS, in greco, significa degno, meritevole. È il riconoscimento dovuto a chi in farmacia ha le competenze per governare questo salto tecnologico — ed è su queste persone che vale la pena investire.
+Il suo funzionamento si basa sull'investimento in risorse umane interne: i collaboratori, soprattutto quelli con competenze tecnologiche, diventano parte integrante del sistema nel momento in cui si introduce e si governa il salto verso le nuove tecnologie.</p>
+        <div class="hero__cta">
+          <a class="btn btn-accent" href="#menu">Esplora il progetto</a>
+          <a class="btn btn-outline" href="contatti.html">Scrivimi per una prova</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="section section--paper" id="menu">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="eyebrow">Indice del progetto</p>
+        <h2>Scegli da dove iniziare</h2>
+        <p class="lead">Dieci tappe per capire cos'è AXIOS AI, come è fatto e
+        perché nasce da un'idea precisa: la tecnologia al servizio del farmacista.</p>
+      </div>
+      <div class="menu-grid">
+      <a class="menu-card reveal" href="filosofia.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">01</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="15" r="4"/><path d="M11 12l9-9M16 7l2 2M19 4l2 2"/></svg></span>
+        </div>
+        <h3>Filosofia</h3>
+        <p>Perché si chiama AXIOS e cosa significa davvero.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="compatibilita.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">02</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 7V3M15 7V3M7 7h10v4a5 5 0 0 1-5 5 5 5 0 0 1-5-5V7Z"/><path d="M12 16v5"/></svg></span>
+        </div>
+        <h3>Compatibilità</h3>
+        <p>Funziona con qualsiasi gestionale, senza lock-in.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="chatbox.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">03</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v10H9l-4 4V5Z"/><path d="M8 9h8M8 12h5"/></svg></span>
+        </div>
+        <h3>Chatbox intelligenti</h3>
+        <p>Ricette, prenotazioni, prodotti, assistenza: a richiesta.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="ecosistema.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">04</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17a4 4 0 0 1-.4-8 5 5 0 0 1 9.7-1.6A4.5 4.5 0 0 1 17 17H7Z"/></svg></span>
+        </div>
+        <h3>Ecosistema tecnologico</h3>
+        <p>Cloud, ibrida o 100% locale: due paradigmi a confronto.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="privacy.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">05</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
+        </div>
+        <h3>Privacy & dati</h3>
+        <p>Tre soluzioni, una sola filosofia: i dati restano tuoi.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="requisiti.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">06</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"/><path d="M9 3v3M15 3v3M9 18v3M15 18v3M3 9h3M3 15h3M18 9h3M18 15h3"/></svg></span>
+        </div>
+        <h3>Requisiti</h3>
+        <p>Le competenze reali che servono per usarlo bene.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="guida-uso.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">07</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8.5" cy="8" r="3"/><circle cy="9" cx="17" r="2.4"/><path d="M3 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5M14.5 19c.3-2 1.8-3.6 4-3.9"/></svg></span>
+        </div>
+        <h3>Guida all'uso</h3>
+        <p>Trattatelo come un collega, non come un automa.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="sicurezza.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">08</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6l-7-3Z"/><path d="m9 12 2 2 4-4"/></svg></span>
+        </div>
+        <h3>Sicurezza</h3>
+        <p>Isolamento totale: zero rischi per il gestionale.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="progetto-libero.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">09</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="9" width="16" height="11" rx="1.5"/><path d="M4 13h16M12 9v11"/><path d="M12 9c-1.5 0-3-1-3-2.5S10.3 4 11.5 4 13 5 12 9ZM12 9c1.5 0 3-1 3-2.5S13.7 4 12.5 4 11 5 12 9Z"/></svg></span>
+        </div>
+        <h3>Un progetto libero</h3>
+        <p>Cosa è gratuito e perché non c'è nulla da vendere.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      <a class="menu-card reveal" href="contatti.html">
+        <div class="menu-card__top">
+          <span class="menu-card__num">10</span>
+          <span class="menu-card__icon"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg></span>
+        </div>
+        <h3>Contatti</h3>
+        <p>Facciamo un test insieme: scrivimi due righe.</p>
+        <span class="menu-card__go">Leggi la sezione <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
+      </a>
+      </div>
+    </div>
+  </section>
+  <section class="section section--soft">
+    <div class="container text-center reveal" style="max-width:620px;margin:0 auto;">
+      <p class="eyebrow" style="justify-content:center">Un progetto pilota</p>
+      <h2>Sei un farmacista e vuoi capire se sei pronto al salto?</h2>
+      <p class="lead" style="margin:0 auto 1.6em">Sto testando AXIOS AI nella sua fase
+      finale. Se l'idea ti incuriosisce, sono felice di offrirti una consulenza
+      strategica per configurare il tuo assistente ideale.</p>
+      <a class="btn btn-accent" href="contatti.html">Parliamone insieme</a>
+    </div>
+  </section>
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>AXIOS AI</h4>
+          <p>AXIOS AI è gratis. Assistente AI agentico che si modella sulla farmacia e su chi ci lavora, su copia mirror del gestionale.</p>
+        </div>
+        <div>
+          <h4>Esplora</h4>
+          <ul class="footer-links">
+            <li><a href="filosofia.html">Filosofia</a></li>
+            <li><a href="ecosistema.html">Ecosistema tecnologico</a></li>
+            <li><a href="sicurezza.html">Sicurezza</a></li>
+            <li><a href="progetto-libero.html">Un progetto libero</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Parliamone</h4>
+          <div class="footer-contact">
+            <a href="mailto:mianopino@libero.it"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg> mianopino@libero.it</a>
+            <a href="https://wa.me/393296140129"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 3h3l1.5 4.5L8 9.5a12 12 0 0 0 6.5 6.5l2-2.5L21 15v3a2 2 0 0 1-2 2C11.5 20 4 12.5 4 5a2 2 0 0 1 2-2Z"/></svg> +39 329 6140129</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>Progetto pilota — AXIOS, dal greco: degno, meritevole, valido.</span>
+        <span>Nessun gestionale modificato nella produzione di questo sito :)</span>
+      </div>
+    </div>
+  </footer>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
