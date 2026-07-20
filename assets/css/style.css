@@ -232,11 +232,11 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   background-repeat: no-repeat;
   min-height: clamp(480px, 78vw, 680px);
   display: flex;
-  align-items: flex-end;
-  padding: 64px 0 56px;
+  align-items: center;
+  padding: 0 0 40px;
 }
 @media (max-width: 600px) {
-  .hero { align-items: flex-end; padding: 220px 0 40px; }
+  .hero { align-items: center; padding: 0 0 40px; }
 }
 
 .hero__seal {
