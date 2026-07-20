@@ -101,3 +101,4 @@ Per sostituire la foto in futuro, basta rimpiazzare il file
 `assets/img/hero-cover.jpg` (stesso nome) oppure cambiare il percorso nella regola
 `.hero` dentro `assets/css/style.css`.
 
+
