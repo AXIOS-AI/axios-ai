@@ -227,7 +227,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
       rgba(13, 20, 15, 0.97) 100%),
     url("../img/hero-cover.jpg");
   background-size: cover;
-  background-position: center top;
+  background-position: center 30%;
   background-repeat: no-repeat;
   min-height: clamp(480px, 78vw, 680px);
   display: flex;
@@ -235,7 +235,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   padding: 64px 0 56px;
 }
 @media (max-width: 600px) {
-  .hero { align-items: flex-end; padding: 220px 0 40px; background-position: center 30%; }
+  .hero { align-items: flex-end; padding: 220px 0 40px; }
 }
 
 .hero__seal {
