@@ -262,13 +262,11 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
 .hero h1 {
   font-size: clamp(2.1rem, 4.6vw, 3.1rem);
   margin: 0.4em 0 0.5em;
-  text-align: justify;
-  text-align-last: justify;
+  text-align: center;
 }
 .hero__inner p,
 .hero__inner .lead {
-  text-align: justify;
-  text-align-last: justify;
+  text-align: center;
 }
 .hero h1 em {
   font-style: italic;
