@@ -235,7 +235,7 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   padding: 64px 0 56px;
 }
 @media (max-width: 600px) {
-  .hero { align-items: flex-end; padding: 500px 0 40px; }
+  .hero { align-items: flex-end; padding: 220px 0 40px; background-position: center 30%; }
 }
 
 .hero__seal {
