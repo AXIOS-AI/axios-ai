@@ -142,7 +142,8 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   gap: 10px;
   color: var(--color-paper);
 }
-.brand__mark { width: 34px; height: 34px; color: var(--color-accent-soft); flex: none; }
+.brand__mark, .brand__logo { width: 34px; height: 34px; flex: none; }
+.brand__logo { border-radius: 50%; object-fit: cover; }
 .brand__word {
   font-family: var(--font-display);
   font-size: 1.05rem;
@@ -574,6 +575,25 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   font-size: 0.72rem;
   letter-spacing: 0.03em;
   color: rgba(246, 242, 230, 0.55);
+}
+
+.footer-logo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex: none;
+  opacity: 0.9;
+  transition: opacity .3s;
+}
+.footer-logo:hover { opacity: 1; }
+.footer-parliamone {
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+}
+.footer-parliamone__content {
+  flex: 1;
 }
 
 /* ---------------------------------------------------------------- */
