@@ -142,8 +142,8 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   gap: 10px;
   color: var(--color-paper);
 }
-.brand__mark, .brand__logo { width: 34px; height: 34px; flex: none; }
-.brand__logo { border-radius: 50%; object-fit: cover; }
+.brand__mark { width: 34px; height: 34px; flex: none; }
+.brand__logo { width: 60px; height: 60px; flex: none; border-radius: 50%; object-fit: cover; }
 .brand__word {
   font-family: var(--font-display);
   font-size: 1.05rem;
