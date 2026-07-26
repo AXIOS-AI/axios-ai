@@ -14,8 +14,119 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&amp;family=Archivo:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/style.css">
+<style>
+/* SPLASH OVERLAY */
+#splash {
+  position:fixed;inset:0;z-index:9999;
+  background:#0d1f1a;
+  display:flex;align-items:center;justify-content:center;
+  opacity:1;transition:opacity .6s ease;
+  font-family:'Archivo',sans-serif;
+}
+#splash.hide { opacity:0;pointer-events:none; }
+.splash-inner { text-align:center;padding:2rem;max-width:640px;width:100%; }
+.splash-badge {
+  display:inline-block;
+  font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+  color:#c8a86b;border:1px solid #c8a86b33;border-radius:100px;
+  padding:.35em 1em;margin-bottom:1.5rem;
+}
+.splash-page { display:none; }
+.splash-page.active { display:block;animation:fadeIn .5s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+.splash-inner h2 {
+  font-family:'Fraunces',serif;font-size:clamp(1.5rem,4.5vw,2.8rem);
+  font-weight:400;color:#f6f2e6;line-height:1.25;margin:0 0 1rem;
+}
+.splash-inner h2 strong { font-weight:600; }
+.splash-challenge {
+  font-size:clamp(1rem,2.2vw,1.2rem);color:rgba(246,242,230,.8);
+  line-height:1.6;margin-bottom:1.5rem;
+}
+.splash-challenge em { color:#c8a86b;font-style:normal;font-weight:500; }
+.splash-list { text-align:left;max-width:460px;margin:0 auto 1.5rem;padding:0;list-style:none; }
+.splash-list li {
+  color:rgba(246,242,230,.75);font-size:.95rem;line-height:1.5;
+  padding:.35em 0 .35em 1.2em;
+  position:relative;
+}
+.splash-list li::before {
+  content:'';position:absolute;left:0;top:.75em;
+  width:6px;height:6px;border-radius:50%;background:#c8a86b77;
+}
+.splash-divider { width:40px;height:2px;background:#c8a86b55;margin:0 auto 1.2rem;border:none; }
+.splash-answer {
+  font-size:clamp(1.1rem,2.5vw,1.4rem);color:#f6f2e6;font-weight:600;
+  margin-bottom:.4rem;
+}
+.splash-sub {
+  font-size:.85rem;color:rgba(246,242,230,.55);margin-bottom:2rem;
+}
+.splash-btn {
+  display:inline-block;padding:.85em 2.2em;
+  background:#c8a86b;color:#0d1f1a;font-weight:600;font-size:.95rem;
+  border:none;border-radius:100px;cursor:pointer;
+  transition:background .2s,transform .1s;
+  text-decoration:none;
+}
+.splash-btn:hover { background:#dbb976;transform:scale(1.02); }
+.splash-btn:active { transform:scale(.97); }
+.splash-next {
+  display:inline-block;margin-top:1rem;
+  background:transparent;color:#c8a86b;font-size:.85rem;
+  border:none;cursor:pointer;text-decoration:underline;
+  text-underline-offset:3px;opacity:.7;transition:opacity .2s;
+}
+.splash-next:hover { opacity:1; }
+</style>
 </head>
 <body>
+<!-- SPLASH OVERLAY -->
+<div id="splash">
+  <div class="splash-inner">
+
+    <!-- Pagina 0 — Intro -->
+    <div class="splash-page active" id="splash-p0">
+      <div class="splash-badge">Attenzione</div>
+      <h2 style="font-size:clamp(2rem,6vw,3.6rem);">Fate questi <strong>due esperimenti</strong>.</h2>
+      <p class="splash-challenge" style="font-size:clamp(1.2rem,3vw,1.5rem);margin-bottom:2.5rem;">Poi decidete se AXIOS fa per voi.<br>Se il risultato non vi serve, <strong>AXIOS non serve neanche a voi</strong>.</p>
+      <hr class="splash-divider">
+      <button class="splash-btn" onclick="document.getElementById('splash-p0').classList.remove('active');document.getElementById('splash-p1').classList.add('active')">Iniziamo →</button>
+    </div>
+
+    <!-- Pagina 1 — Primo esperimento -->
+    <div class="splash-page" id="splash-p1">
+      <div class="splash-badge">1° Esperimento</div>
+      <h2>Mettete un prodotto in offerta. <br><strong>Quanto è venduto</strong> nella vostra città, in provincia e online — perché il cliente può muoversi facilmente in questo spazio?</h2>
+      <p class="splash-challenge"><em>Come fate a scoprirlo?</em> Quanto tempo vi serve? Quanti strumenti?</p>
+      <hr class="splash-divider">
+      <p class="splash-answer">AXIOS lo fa in pochi minuti.</p>
+      <p class="splash-sub">Report dettagliato con fonti. Legalmente. Gratis.</p>
+      <button class="splash-btn" onclick="document.getElementById('splash-p1').classList.remove('active');document.getElementById('splash-p2').classList.add('active')">Prossimo esperimento →</button>
+    </div>
+
+    <!-- Pagina 2 — Secondo esperimento -->
+    <div class="splash-page" id="splash-p2">
+      <div class="splash-badge">2° Esperimento</div>
+      <h2 style="font-size:clamp(1.7rem,5vw,3rem);">Allestire uno scaffale con una linea di prodotti e creare <strong>vendite d'istinto</strong>.</h2>
+      <p class="splash-challenge" style="font-size:clamp(1.1rem,2.5vw,1.4rem);">Dovete organizzare tre compartimenti:</p>
+      <ul class="splash-list" style="font-size:clamp(1.15rem,2.8vw,1.5rem);">
+        <li><strong style="color:#f6f2e6;">Prodotti poco movimentati</strong> — da aggregare e smaltire</li>
+        <li><strong style="color:#f6f2e6;">Prodotti chiodo / in stock</strong> — best seller e scorte ferme</li>
+        <li><strong style="color:#f6f2e6;">Prodotti a breve e media scadenza</strong> — da smaltire in fretta</li>
+      </ul>
+      <p class="splash-challenge" style="font-size:clamp(1.1rem,2.5vw,1.4rem);">Per ogni compartimento: accoppiare prodotti attinenti, creare claim di vendita, promozioni e locandine pronte da stampare.</p>
+      <hr class="splash-divider">
+      <p class="splash-answer" style="font-size:clamp(1.3rem,3vw,1.8rem);">Se ci riuscite in 2 minuti, AXIOS non vi serve.</p>
+      <p class="splash-sub" style="font-size:clamp(1rem,2.2vw,1.3rem);color:rgba(246,242,230,.7);">Altrimenti, AXIOS fa tutto: ricerca, cross-selling, claim, locandine PDF pronte da stampare.</p>
+      <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <button class="splash-btn" onclick="sessionStorage.setItem('splashDone','1');document.getElementById('splash').classList.add('hide')">MI INTERESSA</button>
+        <a class="splash-btn" href="non-serve.html" style="background:transparent;border:1px solid #c8a86b55;color:rgba(246,242,230,.7);">NON MI INTERESSA</a>
+      </p>
+    </div>
+
+  </div>
+</div>
   <header class="site-header">
     <div class="site-header__bar">
       <a class="brand" href="index.html">
@@ -37,6 +148,7 @@
           <li><a href="sicurezza.html">Sicurezza</a></li>
           <li><a href="progetto-libero.html">Progetto libero</a></li>
           <li><a href="contatti.html">Contatti</a></li>
+          <li><a href="#" onclick="sessionStorage.removeItem('splashDone');location.reload();return false;" style="color:#c8a86b;">Esperimenti</a></li>
         </ul>
       </nav>
     </div>
@@ -56,15 +168,11 @@
           Quante volte ti hanno chiesto un report o un'analisi e hai dovuto farla a mano?<br><br>
           <strong>Il problema non sei tu. È che stai usando strumenti che si fermano dove il tuo lavoro inizia.</strong><br><br>
           <strong>AXIOS restituisce valore al farmacista, non alla macchina.</strong><br><br>
-          Fa in pochi secondi ciò che normalmente richiede tempo, procedure complicate o interventi della software house. Ti aiuta a trovare informazioni, automatizzare attività, creare report, analizzare dati e molto altro, senza costi aggiuntivi per ogni singola funzione.<br><br>
-          E non finisce qui.<br><br>
-          AXIOS può essere analista, consulente, esperto di marketing, grafico, social manager e segretario. Crea presentazioni, documenti, analisi e supporta centinaia di attività quotidiane.<br><br>
-          <strong>Il gestionale gestisce. AXIOS lavora con te.</strong>
+          Il gestionale gestisce. AXIOS <strong>lavora con te</strong>.
         </p>
         <div class="hero__cta">
           <a class="btn btn-accent" href="#menu">Esplora il progetto</a>
-          <a class="btn btn-outline" href="contatti.html">Scrivimi per una prova</a>
-        </div>
+          <a class="btn btn-outline" href="contatti.html">Facciamo il test insieme</a>
       </div>
     </div>
   </section>
@@ -204,6 +312,7 @@
       </div>
     </div>
   </footer>
-  <script src="assets/js/main.js"></script>
+  <script>if(sessionStorage.getItem('splashDone'))document.getElementById('splash').style.display='none';</script>
+<script src="assets/js/main.js"></script>
 </body>
 </html>
