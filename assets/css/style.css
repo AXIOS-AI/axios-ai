@@ -280,6 +280,23 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   color: var(--color-accent-soft);
 }
 
+.hero__brand-stamp {
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  opacity: 0.25;
+  pointer-events: none;
+  top: 8%;
+  right: 4%;
+  animation: stamp-pulse 3s ease-in-out infinite;
+}
+@keyframes stamp-pulse {
+  0%, 100% { opacity: 0.25; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.1); }
+}
+
 .hero__cta { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 1.6em; }
 
 
