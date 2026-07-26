@@ -292,6 +292,12 @@ p { margin: 0 0 1em; color: var(--color-ink-soft); }
   right: 4%;
   animation: stamp-pulse 3s ease-in-out infinite;
 }
+@media (max-width: 600px) {
+  .hero__brand-stamp { width: 90px; height: 90px; top: 4%; right: 4%; }
+}
+@media (max-width: 400px) {
+  .hero__brand-stamp { width: 70px; height: 70px; }
+}
 @keyframes stamp-pulse {
   0%, 100% { opacity: 0.25; transform: scale(1); }
   50%      { opacity: 1; transform: scale(1.1); }
