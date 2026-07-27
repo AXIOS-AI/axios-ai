@@ -78,7 +78,47 @@
   text-underline-offset:3px;opacity:.7;transition:opacity .2s;
 }
 .splash-next:hover { opacity:1; }
-</style>
+
+/* PILLOLE ANIMATE */
+@keyframes pill-red-enter {
+  0% { transform: translateX(-200%) scale(0.3); opacity: 0; }
+  60% { transform: translateX(5%) scale(1.1); opacity: 1; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
+@keyframes pill-blue-exit {
+  0% { transform: translateX(0) scale(1); opacity: 1; }
+  40% { transform: translateX(-5%) scale(1.1); opacity: 1; }
+  100% { transform: translateX(200%) scale(0.3); opacity: 0; }
+}
+.pill-container {
+  display:flex;flex-direction:column;align-items:center;gap:2rem;
+  margin:2rem auto;max-width:500px;
+}
+.pill {
+  display:flex;align-items:center;gap:1rem;
+  padding:1rem 1.8rem;border-radius:100px;
+  font-family:'Archivo',sans-serif;font-weight:600;
+  font-size:clamp(1.1rem,2.5vw,1.4rem);
+  line-height:1.4;text-align:left;
+  width:100%;box-sizing:border-box;
+}
+.pill--red {
+  background:linear-gradient(135deg,#c0392b,#e74c3c);
+  color:#fff;box-shadow:0 0 30px rgba(192,57,43,.4);
+  animation:pill-red-enter 1.2s ease-out forwards;
+}
+.pill--blue {
+  background:linear-gradient(135deg,#2980b9,#3498db);
+  color:#fff;box-shadow:0 0 30px rgba(41,128,185,.4);
+  animation:pill-blue-exit 1.2s ease-out forwards;
+  animation-delay:3s;
+  opacity:0;
+}
+.pill__icon {
+  font-size:1.8rem;flex-shrink:0;
+}
+.pill__text { flex:1; }
+
 </head>
 <body>
 <!-- SPLASH OVERLAY -->
@@ -120,8 +160,29 @@
       <p class="splash-answer" style="font-size:clamp(1.3rem,3vw,1.8rem);">Se ci riuscite in 2 minuti, AXIOS non vi serve.</p>
       <p class="splash-sub" style="font-size:clamp(1rem,2.2vw,1.3rem);color:rgba(246,242,230,.7);">Altrimenti, AXIOS fa tutto: ricerca, cross-selling, claim, locandine PDF pronte da stampare.</p>
       <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <button class="splash-btn" onclick="sessionStorage.setItem('splashDone','1');document.getElementById('splash').classList.add('hide')">MI INTERESSA</button>
-        <a class="splash-btn" href="non-serve.html" style="background:transparent;border:1px solid #c8a86b55;color:rgba(246,242,230,.7);">NON MI INTERESSA</a>
+        <button class="splash-btn" onclick="document.getElementById('splash-p2').classList.remove('active');document.getElementById('splash-p3').classList.add('active')">Prossimo step →</button>
+      </p>
+    </div>
+
+    <!-- Pagina 3 — Scelta finale -->
+    <div class="splash-page" id="splash-p3">
+      <div class="splash-badge">Ultimo passo</div>
+      <h2 style="font-size:clamp(1.4rem,4vw,2.2rem);">Ti ringrazio per il tempo che mi hai dedicato.</h2>
+      <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.3rem);">Il tempo è prezioso e non tutti i progetti riescono a suscitare interesse, curiosità o voglia di approfondire. Per questo, ora ti chiedo semplicemente di fare una scelta.</p>
+      <div class="pill-container">
+        <div class="pill pill--red">
+          <span class="pill__icon">🔴</span>
+          <span class="pill__text"><strong>Pillola rossa:</strong> segui la tua curiosità, entra nel progetto e scopri una nuova possibilità di crescita, miglioramento ed espansione.</span>
+        </div>
+        <div class="pill pill--blue">
+          <span class="pill__icon">🔵</span>
+          <span class="pill__text"><strong>Pillola blu:</strong> continua serenamente con quello che stavi facendo e prosegui il tuo percorso attuale.</span>
+        </div>
+      </div>
+      <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.2rem);font-style:italic;color:rgba(246,242,230,.7);margin-bottom:1.5rem;">La decisione spetta solo a te.</p>
+      <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <button class="splash-btn" onclick="sessionStorage.setItem('splashDone','1');document.getElementById('splash').classList.add('hide')">🔴 Scelgo la pillola rossa</button>
+        <a class="splash-btn" href="non-serve.html" style="background:transparent;border:1px solid #c8a86b55;color:rgba(246,242,230,.7);">🔵 Scelgo la pillola blu</a>
       </p>
     </div>
 
