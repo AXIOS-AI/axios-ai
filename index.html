@@ -85,6 +85,11 @@
   60% { transform: translateX(5%) scale(1.1); opacity: 1; }
   100% { transform: translateX(0) scale(1); opacity: 1; }
 }
+@keyframes pill-blue-enter {
+  0% { transform: translateX(200%) scale(0.3); opacity: 0; }
+  60% { transform: translateX(-5%) scale(1.1); opacity: 1; }
+  100% { transform: translateX(0) scale(1); opacity: 1; }
+}
 @keyframes pill-blue-exit {
   0% { transform: translateX(0) scale(1); opacity: 1; }
   40% { transform: translateX(-5%) scale(1.1); opacity: 1; }
@@ -110,8 +115,8 @@
 .pill--blue {
   background:linear-gradient(135deg,#2980b9,#3498db);
   color:#fff;box-shadow:0 0 30px rgba(41,128,185,.4);
-  animation:pill-blue-exit 1.2s ease-out forwards;
-  animation-delay:3s;
+  animation:pill-blue-enter 1.2s ease-out forwards;
+  animation-delay:0.3s;
   opacity:0;
 }
 .pill__icon {
