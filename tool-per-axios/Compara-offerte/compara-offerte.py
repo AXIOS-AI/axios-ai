@@ -232,60 +232,49 @@ SITEMAP_PATHS = [
 
 def _scarica_e_cerca_in_sitemap(url, targets, max_bytes=6*1024*1024):
     """Scarica sitemap (max max_bytes), cerca URL con uno dei targets.
-    Segue anche sitemap index."""
+    Segue anche sitemap index (child in parallelo)."""
     found = []
     try:
         r = requests.get(url, headers={"User-Agent": USER_AGENT},
                          timeout=8, verify=False, stream=True)
         if r.status_code >= 400:
             return found
-        
+
         chunks = []
         total = 0
         for chunk in r.iter_content(chunk_size=32768, decode_unicode=False):
-            if not chunk:
-                break
+            if not chunk: break
             chunks.append(chunk)
             total += len(chunk)
-            if total > max_bytes:
-                break
-        
+            if total > max_bytes: break
+
         data = b"".join(chunks)
-        
-        # Decompress gzip
-        try:
-            data = gzip.decompress(data)
-        except:
-            pass
-        
+        try: data = gzip.decompress(data)
+        except: pass
         text = data.decode("utf-8", errors="ignore")
-        
-        # Estrai URL da <loc> gestendo CDATA
-        loc_re = re.compile(r'<loc[^>]*>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</loc>',
-                            re.IGNORECASE | re.DOTALL)
+
+        loc_re = re.compile(r'<loc[^>]*>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</loc>', re.IGNORECASE | re.DOTALL)
         for m in loc_re.finditer(text):
             u = m.group(1).strip()
             if u and any(t in u.lower() for t in targets):
                 found.append(u)
-        
-        # Se è sitemap index, segue child sitemap
+
+        # Se sitemap index, segue child in parallelo
         if not found and ('<sitemapindex' in text[:1000].lower() or '<sitemap>' in text[:1000].lower()):
-            # Prima product sitemap, poi altre
-            for cm in loc_re.finditer(text):
-                child_url = cm.group(1).strip()
-                if child_url and 'product' in child_url.lower():
-                    cf = _scarica_e_cerca_in_sitemap(child_url, targets, max_bytes)
-                    found.extend(cf)
-                    if found:
-                        break
-            if not found:
-                for cm in loc_re.finditer(text):
-                    child_url = cm.group(1).strip()
-                    if child_url and 'product' not in child_url.lower():
-                        cf = _scarica_e_cerca_in_sitemap(child_url, targets, max_bytes)
-                        found.extend(cf)
-                        if found:
-                            break
+            child_urls = [cm.group(1).strip() for cm in loc_re.finditer(text) if cm.group(1).strip()]
+            if child_urls:
+                from concurrent.futures import ThreadPoolExecutor as TPE, as_completed as AC
+                with TPE(max_workers=min(4, len(child_urls))) as ipool:
+                    ifut_map = {}
+                    for cu in child_urls:
+                        ifut_map[ipool.submit(_scarica_e_cerca_in_sitemap, cu, targets,
+                                              max_bytes)] = cu
+                    for ifu in AC(ifut_map):
+                        try:
+                            cf = ifu.result()
+                            found.extend(cf)
+                            if found: break
+                        except: pass
     except:
         pass
     return found
