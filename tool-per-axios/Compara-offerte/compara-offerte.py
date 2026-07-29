@@ -216,140 +216,243 @@ def carica_siti_md():
     return siti
 
 
-import urllib.parse
+import gzip
+import io
+import xml.etree.ElementTree as ET
 
-# Pattern URL per ricerca su domini e-commerce
-URL_PATTERNS = [
-    "/catalogsearch/result/?q={q}",
-    "?s={q}",
-    "/search?q={q}",
-    "/{slug}.html",
-    "/{slug}",
+SITEMAP_PATHS = [
+    "/sitemap.xml",
+    "/sitemap_index.xml",
+    "/sitemap/sitemap.xml",
+    "/sitemap_products_1.xml",
+    "/media/sitemap.xml",
+    "/product_sitemap.xml",
 ]
 
-PREFIXES = ["", "www."]
-NON_ECOMMERCE = {"facebook", "instagram", "twitter", "youtube", "linkedin",
-                 "whatsapp", "telegram", "google", "amazon", "ebay",
-                 "subito", "aranzulla", "telehealth", "hhs.gov",
-                 "microsoft", "wordpress", "blogger", "tumblr"}
 
-
-def _cerca_form_e_cerca(soup, base, farmaco_q):
-    """Trova form di ricerca nella homepage e prova a cercare."""
-    for form in soup.find_all("form", action=True)[:3]:
-        action = form["action"]
-        # Trova input di testo
-        inp = form.find("input", type="text") or form.find("input", type="search") or form.find("input", type="submit") is not None
-        # Costruisci URL di ricerca
-        if action.startswith("/"):
-            search_url = base.rstrip("/") + action
-        elif action.startswith("http"):
-            search_url = action
-        else:
-            continue
-        # Prova parametri GET comuni
-        for param in ["s", "q", "search", "query", "keywords", "cerca"]:
-            sep = "&" if "?" in search_url else "?"
-            url = f"{search_url}{sep}{param}={farmaco_q}"
+def _scarica_e_cerca_in_sitemap(url, targets, max_bytes=6*1024*1024):
+    """Scarica sitemap (max max_bytes), cerca URL con uno dei targets.
+    Segue anche sitemap index."""
+    found = []
+    try:
+        r = requests.get(url, headers={"User-Agent": USER_AGENT},
+                         timeout=8, verify=False, stream=True)
+        if r.status_code >= 400:
+            return found
+        
+        chunks = []
+        total = 0
+        for chunk in r.iter_content(chunk_size=32768, decode_unicode=False):
+            if not chunk:
+                break
+            chunks.append(chunk)
+            total += len(chunk)
+            if total > max_bytes:
+                break
+        
+        data = b"".join(chunks)
+        
+        # Decompress gzip
+        try:
+            data = gzip.decompress(data)
+        except:
+            pass
+        
+        text = data.decode("utf-8", errors="ignore")
+        
+        # Estrai URL da <loc> gestendo CDATA
+        loc_re = re.compile(r'<loc[^>]*>\s*(?:<!\[CDATA\[)?\s*(.*?)\s*(?:\]\]>)?\s*</loc>',
+                            re.IGNORECASE | re.DOTALL)
+        for m in loc_re.finditer(text):
+            u = m.group(1).strip()
+            if u and any(t in u.lower() for t in targets):
+                found.append(u)
+        
+        # Se è sitemap index, segue child sitemap
+        if not found and ('<sitemapindex' in text[:1000].lower() or '<sitemap>' in text[:1000].lower()):
+            # Prima product sitemap, poi altre
+            for cm in loc_re.finditer(text):
+                child_url = cm.group(1).strip()
+                if child_url and 'product' in child_url.lower():
+                    cf = _scarica_e_cerca_in_sitemap(child_url, targets, max_bytes)
+                    found.extend(cf)
+                    if found:
+                        break
+            if not found:
+                for cm in loc_re.finditer(text):
+                    child_url = cm.group(1).strip()
+                    if child_url and 'product' not in child_url.lower():
+                        cf = _scarica_e_cerca_in_sitemap(child_url, targets, max_bytes)
+                        found.extend(cf)
+                        if found:
+                            break
+    except:
+        pass
+    return found
+def _estrai_prezzo_da_pagina(url, parole, aic):
+    """Visita pagina prodotto e estrae prezzo via JSON-LD, meta, JS, HTML."""
+    try:
+        r = requests.get(url, headers={"User-Agent": USER_AGENT},
+                         timeout=5, verify=False, allow_redirects=True)
+        if r.status_code >= 400 or len(r.text) < 500:
+            return None
+        
+        txt = r.text[:100000]
+        txt_lower = txt.lower()
+        
+        # Verifica che la pagina contenga il prodotto
+        if not any(p in txt_lower for p in parole):
+            if not aic or aic.lower() not in txt_lower:
+                return None
+        
+        # 1) JSON-LD (schema.org Product)
+        for m in re.finditer(r'<script[^>]*type=["\']application/ld\+json["\'][^>]*>(.*?)</script>',
+                             txt, re.IGNORECASE | re.DOTALL):
             try:
-                r = requests.get(url, headers={"User-Agent": USER_AGENT},
-                                 timeout=3, verify=False)
-                if r.status_code < 400 and len(r.text) > 500:
-                    return r
+                import json
+                data = json.loads(m.group(1))
+                # Estrai prezzo da schema.org Product
+                if isinstance(data, dict):
+                    if data.get("@type") == "Product":
+                        off = data.get("offers", {})
+                        if isinstance(off, dict):
+                            p = off.get("price", "")
+                            if p:
+                                return {"url": url, "prezzo": float(p)}
+                    # Graph array
+                    for item in (data.get("@graph", []) if isinstance(data, dict) else (data if isinstance(data, list) else [])):
+                        if isinstance(item, dict) and item.get("@type") in ("Product", "MedicalProduct"):
+                            off = item.get("offers", {})
+                            if isinstance(off, dict):
+                                p = off.get("price", "")
+                                if p:
+                                    return {"url": url, "prezzo": float(p)}
+                            p = item.get("price", "")
+                            if p:
+                                return {"url": url, "prezzo": float(p)}
+                elif isinstance(data, list):
+                    for item in data:
+                        if isinstance(item, dict) and item.get("@type") in ("Product", "MedicalProduct"):
+                            off = item.get("offers", {})
+                            if isinstance(off, dict):
+                                p = off.get("price", "")
+                                if p:
+                                    return {"url": url, "prezzo": float(p)}
             except:
                 pass
+        
+        # 2) Meta tags
+        for m in re.finditer(r'<meta\s+property=["\']product:price:amount["\']\s+content=["\']([^"\']+)["\']',
+                             txt_lower, re.IGNORECASE):
+            try:
+                v = float(m.group(1))
+                if 3.0 < v < 2000.0:
+                    return {"url": url, "prezzo": v}
+            except:
+                pass
+        
+        # 3) JS variables
+        for var in ["product_price", "prezzovend", "prezzo", "price"]:
+            m = re.search(rf'{var}\s*[=:]\s*["\']?(\d+[.,]\d+)', txt_lower)
+            if m:
+                try:
+                    v = float(m.group(1).replace(",", "."))
+                    if 3.0 < v < 2000.0:
+                        return {"url": url, "prezzo": v}
+                except:
+                    pass
+        
+        # 4) Prezzo € in pagina
+        for m in re.finditer(r"€\s*(\d+[.,]\d{2})", txt):
+            try:
+                v = float(m.group(1).replace(",", "."))
+                if 3.0 < v < 2000.0 and "%" not in txt[max(0, m.start()-20):m.end()+5]:
+                    return {"url": url, "prezzo": v}
+            except:
+                pass
+        
+    except:
+        pass
     return None
 
 
 def _cerca_dominio_wrapper(args):
-    """Crawler intelligente: trova form + pattern + follow link."""
-    dom, slug, q_encoded, parole, aic = args
+    """Cerca prodotto su dominio via sitemap.xml + AIC/slug."""
+    dom, slug, parole, aic = args
     dom_clean = dom.replace("www.", "").strip()
-    prefix_opts = ["www.", ""] if not dom.startswith("www.") else [""]
     
-    for prefix in prefix_opts:
-        base = f"https://{prefix}{dom}"
+    base = f"https://{dom_clean}"
+    
+    # 1) Prova sitemap — cerca per prima parola (es. "miflor" matcha "miflor-10bust")
+    target = parole[0] if parole else (aic or slug).lower()
+    # Se anche AIC, include
+    targets = [target]
+    if aic:
+        targets.append(aic.lower())
+    if slug and slug != target:
+        targets.append(slug)
+    for sm_path in ["/sitemap.xml", "/sitemap_index.xml"]:
+        sm_url = base + sm_path
+        matched = _scarica_e_cerca_in_sitemap(sm_url, targets)
+        if matched:
+            for prod_url in matched[:3]:
+                ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
+                if ris:
+                    return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
+                            "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
         
+        # 2) Fallback: homepage + form search
         try:
-            # 1) Scarica homepage per trovare form di ricerca
             rh = requests.get(base, headers={"User-Agent": USER_AGENT},
                               timeout=3, verify=False)
             if rh.status_code < 400 and len(rh.text) > 500:
                 soup = BeautifulSoup(rh.text[:100000], "lxml")
-                res = _cerca_form_e_cerca(soup, base, q_encoded)
-                if res:
-                    txt = res.text[:80000].lower()
-                    if any(p in txt for p in parole) or (aic and aic.lower() in txt):
-                        # Prova prezzo nella pagina
-                        prezzi = list(re.finditer(r"€\s*\d+[.,]\d{2}", txt))
-                        for m in prezzi[:3]:
-                            v = float(m.group(0).replace("€","").replace(",",".").strip())
-                            if 3.0 < v < 2000.0:
-                                return {"url": res.url, "titolo": dom, "fonte": "siti.md",
-                                        "_prezzo": m.group(0), "_dom": dom}
-                        # Segui link prodotto dalla search
-                        for a in soup.find_all("a", href=True):
-                            ht = a.get("href", "")
-                            at = a.get_text(strip=True).lower()
-                            if any(p in at for p in parole) and ht not in ["#", "/", ""]:
-                                pu = ht if ht.startswith("http") else base.rstrip("/") + ht
-                                try:
-                                    r2 = requests.get(pu, headers={"User-Agent": USER_AGENT},
-                                                      timeout=4, verify=False)
-                                    if r2.status_code < 400:
-                                        txt2 = r2.text[:80000].lower()
-                                        for m in re.finditer(r"€\s*\d+[.,]\d{2}", txt2):
-                                            v = float(m.group(0).replace("€","").replace(",",".").strip())
-                                            if 3.0 < v < 2000.0:
-                                                return {"url": pu, "titolo": dom,
-                                                        "fonte": "siti.md",
-                                                        "_prezzo": m.group(0), "_dom": dom}
-                                except:
-                                    pass        
+                for form in soup.find_all("form", action=True)[:3]:
+                    action = form["action"]
+                    search_base = action if action.startswith("http") else base.rstrip("/") + "/" + action.lstrip("/")
+                    for param in ["s", "q", "search", "query", "cerca"]:
+                        sep = "&" if "?" in search_base else "?"
+                        su = f"{search_base}{sep}{param}={slug}"
+                        try:
+                            rs = requests.get(su, headers={"User-Agent": USER_AGENT},
+                                              timeout=3, verify=False)
+                            if rs.status_code < 400 and len(rs.text) > 500:
+                                # Cerca link prodotto nella search page
+                                soup2 = BeautifulSoup(rs.text[:150000], "lxml")
+                                for a_tag in soup2.find_all("a", href=True):
+                                    atxt = a_tag.get_text(strip=True).lower()
+                                    if any(p in atxt for p in parole):
+                                        ah = a_tag["href"]
+                                        prod_url = ah if ah.startswith("http") else base.rstrip("/") + "/" + ah.lstrip("/")
+                                        ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
+                                        if ris:
+                                            return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
+                                                    "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
+                        except:
+                            pass
         except:
             pass
-        
-        # 2) Prova pattern URL predefiniti
-        for pat in URL_PATTERNS:
-            url = base + pat.format(q=q_encoded, slug=slug)
-            try:
-                r = requests.get(url, headers={"User-Agent": USER_AGENT},
-                                 timeout=3, verify=False, allow_redirects=True)
-                if r.status_code >= 400 or len(r.text) < 500:
-                    continue
-                txt = r.text[:80000].lower()
-                if not any(p in txt for p in parole):
-                    if not aic or aic.lower() not in txt:
-                        continue
-                prezzi = list(re.finditer(r"€\s*\d+[.,]\d{2}", txt))
-                for m in prezzi[:3]:
-                    v = float(m.group(0).replace("€","").replace(",",".").strip())
-                    if 3.0 < v < 2000.0:
-                        return {"url": url, "titolo": dom, "fonte": "siti.md",
-                                "_prezzo": m.group(0), "_dom": dom}
-            except:
-                pass
+    
     return None
 
 
 def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
-    """Cerca su tutti i domini siti.md con pattern URL multipli."""
+    """Cerca su domini siti.md via sitemap + fallback form search + DuckDuckGo."""
     slug = re.sub(r'[^a-z0-9]+', '-', farmaco.lower()).strip("-")
-    q_encoded = urllib.parse.quote(farmaco.lower())
     parole = farmaco.lower().split()[:3]
     if codice_aic:
         parole.append(codice_aic.lower())
-
+    
     domini = carica_siti_md()
-    log(f"\nCrawler su {len(domini)} domini con {len(URL_PATTERNS)} pattern...", "*")
+    log(f"\nScansione {len(domini)} domini via sitemap...", "*")
     
     from concurrent.futures import ThreadPoolExecutor, as_completed
-    n_w = min(100, len(domini))
+    n_w = min(15, len(domini))  # 15 per non saturare banda sitemap
     
     siti = []
     with ThreadPoolExecutor(max_workers=n_w) as pool:
         futuri = {pool.submit(_cerca_dominio_wrapper,
-                  (d, slug, q_encoded, parole, codice_aic)): d for d, _ in domini}
+                  (d, slug, parole, codice_aic)): d for d, _ in domini}
         done = 0
         for f in as_completed(futuri):
             done += 1
@@ -362,25 +465,25 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
             if done % 50 == 0:
                 log(f"  {done}/{len(domini)} completati, {len(siti)} con prezzo", "~")
             if len(siti) >= max_siti:
-                pass  # let workers finish gracefully
+                pass
     
     if siti:
         siti.sort(key=lambda r: float(r["_prezzo"].replace("€","").replace(",",".")))
     log(f"  {len(domini)} domini, {len(siti)} con prezzo trovato", "+")
-
+    
     # DuckDuckGo fallback
     if len(siti) < max_siti:
         from duckduckgo_search import DDGS
         url_visti = {s["_dom"] for s in siti}
         log(f"  DuckDuckGo fallback...", "~")
-        parole = farmaco.lower().split()[:2]
+        parole_ddg = farmaco.lower().split()[:2]
         qs = [
-            f'"{farmaco}" prezzo',
-            f'"{farmaco}" farmacia online',
-            f'"{farmaco}" comprare',
-            f'{" ".join(parole)} trovaprezzi',
-            f'{" ".join(parole)} farmacia prezzo',
-            f'site:amazon.it "{farmaco}"',
+            f'\"{farmaco}\" prezzo',
+            f'\"{farmaco}\" farmacia online',
+            f'\"{farmaco}\" comprare',
+            f'{" ".join(parole_ddg)} trovaprezzi',
+            f'{" ".join(parole_ddg)} farmacia prezzo',
+            f'site:amazon.it \"{farmaco}\"',
         ]
         for q in qs:
             try:
@@ -397,11 +500,9 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
                 pass
             if len(siti) >= max_siti:
                 break
-
+    
     log(f"  Totale {len(siti)} siti", "+")
     return siti[:max_siti]
-
-
 PRICE_MIN = 3.0
 PRICE_MAX = 2000.0
 
