@@ -668,6 +668,8 @@ def main():
     parser.add_argument("--max-siti", type=int, default=20, help="Max siti da analizzare")
     parser.add_argument("--citta", type=str, help="Filtra farmacie per città (es. Vittoria, Acate)")
     parser.add_argument("--aic", type=str, help="Codice AIC (ministeriale) per ricerca piu precisa")
+    parser.add_argument("--usa-indice", type=str, nargs="?", const="indice_prezzi.db",
+                        help="Cerca prima nell'indice SQLite locale (path opzionale, default: indice_prezzi.db)")
     args = parser.parse_args()
 
     farmaco = args.farmaco
@@ -735,7 +737,45 @@ def main():
                             "tipo": "farmacia",
                         })
 
-    # 2. Ricerca web (finder-siti integrato)
+    # 2a. Ricerca locale indice (se --usa-indice)
+    if args.usa_indice:
+        import sqlite3
+        db_path = args.usa_indice if args.usa_indice != "indice_prezzi.db" else \
+            os.path.join(os.path.dirname(os.path.abspath(__file__)), args.usa_indice)
+        if os.path.exists(db_path):
+            log(f"Cerca nell'indice locale: {db_path}...", "*")
+            try:
+                conn = sqlite3.connect(db_path)
+                # Cerca per prima parola del nome (FTS5 match parola singola)
+                prima_parola = farmaco.lower().split()[0] if farmaco.split() else farmaco.lower()
+                query_parts = [prima_parola]
+                if args.aic:
+                    query_parts.append(f'aic:{args.aic}')
+                query = ' OR '.join(query_parts)
+                cursor = conn.execute(
+                    "SELECT dominio, url_prodotto, slug, aic, nome_estratto "
+                    "FROM indice WHERE indice MATCH ? ORDER BY rowid LIMIT ?",
+                    (query, args.max_siti * 2)
+                )
+                for row in cursor:
+                    dom, url, slug_val, aic_val, nome = row
+                    if dom not in domini_visti:
+                        domini_visti.add(dom)
+                        siti_da_analizzare.append({
+                            "url": url,
+                            "nome": nome or slug_val or dom,
+                            "tipo": "indice",
+                        })
+                        log(f"  + {nome or slug_val}: {url}", "~")
+                conn.close()
+                trovati = len([s for s in siti_da_analizzare if s['tipo'] == 'indice'])
+                log(f"Trovati {trovati} siti nell'indice", "+" if trovati else "~")
+            except Exception as ex:
+                log(f"Errore query indice: {ex}", "-")
+        else:
+            log(f"Indice non trovato: {db_path}. Lancia crawler-indice.py prima.", "!")
+
+    # 2b. Ricerca web (finder-siti integrato)
     siti_web = cerca_siti_web(farmaco, args.max_siti, codice_aic=args.aic)
     for s in siti_web:
         dom = estrai_dominio(s["url"])
