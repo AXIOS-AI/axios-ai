@@ -20,3 +20,4 @@ test_amore/
 *.pkl
 **/config/credentials.ini
 **/config/settings.json
+indice_prezzi.db
