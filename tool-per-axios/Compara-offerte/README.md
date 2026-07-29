@@ -1,83 +1,57 @@
-# Farmacia OSINT Tool
+# Compara-offerte v2.0
 
-Tool OSINT automatizzato per farmacie italiane. Scopre dati dominio, presenza web, profili social, email e offerte attive.
+Tool confronto prezzi farmacie. Usa dati Farmascopri + Google Shopping API.
 
-## Installazione
-
-```bash
-# Dipendenze Python
-pip install requests beautifulsoup4 lxml
-
-# Tool esterni (consigliati)
-pipx install maigret       # Ricerca username su 3000+ siti
-pipx install holehe         # Verifica email su servizi
-sudo apt install amass dnsenum fierce httpx whois dnsutils  # già su Kali
-```
+**Input**: file JSON generato da Farmascopri (`farmacie_complete.json`)
+**Output**: report HTML comparativo con offerte siti + prezzi Google Shopping
 
 ## Utilizzo
 
 ```bash
-# Base — specifica solo nome
-python3 farmacia-osint.py "Farmacia Calì Mancuso"
+# Default — usa dati Farmascopri, analizza tutte le farmacie
+python3 compara-offerte.py
 
-# Con dominio e città
-python3 farmacia-osint.py "Farmacia Calì Mancuso" --city Vittoria --domain farmaciacalimancuso.it
+# Test su una farmacia
+python3 compara-offerte.py --nome "Farmacia Amato"
 
-# Modalità veloce (salta amass/dnsenum)
-python3 farmacia-osint.py "Farmacia Test" --fast
+# Confronto Google Shopping su termine specifico
+python3 compara-offerte.py --shopping-only --search "Tachipirina 1000"
 
-# Salta fase social (più veloce, no maigret/holehe)
-python3 farmacia-osint.py "Farmacia Test" --skip-social
+# Con file dati custom
+python3 compara-offerte.py --data ./altro-file.json
 
-# Confronto prezzi Google Shopping (richiede API key)
-python3 farmacia-osint.py "Farmacia Test" --shopping --shopping-api-key "tua_chiave"
+# Solo scraping siti (salta API)
+python3 compara-offerte.py --skip-shopping
 
-# Oppure via variabile ambiente
-export SEARCHAPI_KEY="tua_chiave"
-python3 farmacia-osint.py "Farmacia Test" --shopping
-
-# Output in directory specifica
-python3 farmacia-osint.py "Farmacia Test" -o ./output
+# Output in directory custom
+python3 compara-offerte.py -o ./report_20260729
 ```
 
-### API key Google Shopping
+## API Key
 
-Servizio gratuito: **SearchAPI.io** — 100 richieste/mese gratis, no carta di credito.
+Servizio: **SearchAPI.io** — 100 richieste/mese gratis, no carta.
 
-1. Vai su https://www.searchapi.io/ e registrati
-2. Ottieni la tua API key dalla dashboard
-3. Usala con `--shopping-api-key` o imposta `SEARCHAPI_KEY` come variabile d'ambiente
-
-## Fasi
-
-1. **Ricognizione Dominio** — whois, DNS records, subdomini (fierce/amass), tech detection (httpx)
-2. **Presenza Web** — scraping pagine, estrazione email, discovery social links, theHarvester
-3. **Social & Email OSINT** — maigret (username su 3000+ siti), holehe (email su 100+ servizi)
-4. **Offerte & E-commerce** — scraping pagine offerte, rilevamento piattaforme e-commerce
-5. **Report HTML** — report completo con grafiche e link
-
-## Output
-
+Chiave in `.env`:
 ```
-output_<farmacia>_<data>/
-├── report.html           # Report HTML leggibile
-├── report.txt            # Report testo
-├── report_completo.json  # Tutti i dati in JSON
-├── phase1_domain.json    # Dati dominio
-├── phase2_web.json       # Dati presenza web
-├── phase3_social.json    # Dati social
-└── phase4_offers.json    # Dati offerte
+SEARCHAPI_KEY="tua_chiave"
 ```
 
-## Tool integrati
+## Dipendenze
 
-| Tool | Funzione | API Key? |
-|------|----------|----------|
-| whois | Registrazione dominio | ❌ No |
-| dig | DNS records | ❌ No |
-| fierce/amass | Subdomain enumeration | ❌ No |
-| httpx | Tech detection | ❌ No |
-| theHarvester | Email/subdomain discovery | ❌ No |
-| maigret | Username su 3000+ siti | ❌ No |
-| holehe | Email su servizi | ❌ No |
-| curl/requests | Web scraping | ❌ No |
+```bash
+pip install requests beautifulsoup4 lxml
+```
+
+## Struttura
+
+```
+Compara-offerte/
+├── compara-offerte.py      # Script principale
+├── .env                    # API key (SearchAPI.io)
+├── PROJECT.md
+├── README.md
+└── report_comparativo/     # Output generato
+    ├── report.html         # Report HTML leggibile
+    ├── report.json         # Dati completi JSON
+    └── scraping_parziale.json  # Parziale durante esecuzione
+```
