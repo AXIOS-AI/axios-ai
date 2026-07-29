@@ -1,0 +1,149 @@
+# EMAIL FARMACIE — Provincia di Ragusa
+# 13/07/2026
+#
+# ✅ inviata = verificata e inviata
+# ✅ non inviata = verificata, non ancora inviata
+# ❌ = email nota ma senza fonte pubblica / da verificare
+
+========================================================================
+==  EMAIL INVIATE  (78)
+========================================================================
+
+## ACATE
+Farmacia Guarino → farmacia.guarino71@gmail.com
+Farmacia Puglisi Acate SRL → farmaciapuglisiacate@gmail.com
+Farmacia Puglisi SRL → farmaciapuglisisrl@hotmail.com
+
+## CHIARAMONTE GULFI
+Farmacia Azzara e Garretto → farmazzaragarretto@tiscali.it
+Farmacia Tavormina → farmaciatavormina@gmail.com
+
+## COMISO
+Farmacia Adamo → info@farmaciadamonline.it
+Farmacia Amato → farmaciaamatocomiso@gmail.com
+Farmacia Bocchetti → ebocchetti@farmaciabocchetti.it
+Farmacia Lauro di Incardona → incardona.farma@tiscali.it
+Farmacia Noto 2 → giunoto@gmail.com
+Farmacia Spataro SRL → farmaciaspatarocomiso@gmail.com
+
+## ISPICA
+Farmacia Aquiletta → farmaciaaquiletta@virgilio.it
+Farmacia Gerratana → fcia.gerratana@gmail.com
+Farmacia Ispicenia SRL → farmaciaispiceniasrl@gmail.com
+
+## MODICA
+Farmacia Amore → amorefarmacia@tin.it
+Farmacia Del Mulino → farmaciadelmulino2013@gmail.com
+Farmacia Floridia → farm.floridia@gmail.com
+Farmacia G.E. Guccione → farmguccione@gmail.com
+Farmacia Iaconinoto → farmaciaiaconinoto@virgilio.it
+Farmacia Igea SNC → farmaciaigeamodica@gmail.com
+Farmacia Mediterraneo SRL → farmaciamediterraneosrl@gmail.com
+Farmacia Michelica SRL → farmaciamichelica@gmail.com
+Farmacia Montalbano Sgarlata SRL → montalbanosgarlata@farmapos.it
+Farmacia Rizzone → farmaciarizzone@yahoo.it
+Farmacia Roccasalva → sabinaroccasalva@virgilio.it
+Farmacia San Giorgio SRL → farmaciasangiorgiosrl@gmail.com
+Farmacia Schiavo Lena → farmaciaschiavolena@gmail.com
+Farmacia Traina → farmaciatrainamodica@gmail.com
+Farmacia Vindigni → farmaciavindigninoto@alice.it
+
+## MONTEROSSO ALMO
+Farmacia Gulle → farmaciagulle@gmail.com
+
+## POZZALLO
+Farmacia Costa → amministrazione@farmaciacostapozzallo.it
+Farmacia Eredi Losi → farmalosi@libero.it
+Farmacia Maria Regina SRL → info@farmaciamariaregina.it
+Farmacia Papa Giovanni SRL → farmaciapapagiovannipozzallo@gmail.com
+Farmacia Quinta → quintafarmacia@virgilio.it
+Farmacia Scalia → farmacia.scalia@gmail.com
+
+## RAGUSA
+Farmacia Antoci → farmacia.antoci@gmail.com
+Farmacia Basile → basilefarmacia@gmail.com
+Farmacia Croce Verde → farmaciaparisirg@gmail.com
+Farmacia Di Natale → farmaciadinatale@gmail.com
+Farmacia Ecce Homo → farmaeccehomo@gmail.com
+Farmacia Er. Meli → farmaciaeredimeli@virgilio.it
+Farmacia Farma Salus SNC → farmaciasalusrg@gmail.com
+Farmacia Gagini SNC → farmaciagagini@gmail.com
+Farmacia Giampiccolo SRL → info@farmaciagiampiccolo.it
+Farmacia Guccione RG → farmaciaguccione@gmail.com
+Farmacia Matarazzo → farmacia.matarazzo@gmail.com
+Farmacia Nicosia → farmacianicosia@libero.it
+Farmacia Ottaviano E. → emanueleottaviano.farmacia@gmail.com
+Farmacia Pianetti → farmaciapianetti@gmail.com
+Farmacia Poidomani → farmaciapoidomani@gmail.com
+Farmacia Schembari Lucio & C. → lucio.schembari@tiscali.it
+Farmacia Via Falcone SNC → info@farmaciaviafalconeragusa.it
+
+## S. CROCE CAMERINA
+Farmacia Carnazzo → farmaciacarnazzo@gmail.com
+Farmacia Schembari Giorgio & C. → farmaciaschembarigiorgio@gmail.com
+Farmacia del Mare (Casuzze) → farmaciadelmarerg@gmail.com
+
+## SCICLI
+Farmacia Antica → anticaf@tin.it
+Farmacia Cartia → farmaciacartia@gmail.com
+Farmacia Comunale → farmacia.comunale@comune.scicli.rg.it
+Farmacia Criscione Donnalucata → chiara@farmaciadidonnalucata.com
+Farmacia Criscione Donnalucata (2) → farmacia.donnalucata@gmail.com
+Farmacia Papaleo SAS → farmaciapapaleosnc@gmail.com
+Farmacia del Mare Sampieri → fdmsampieri@gmail.com
+Farmacia del Popolo di Ferro → info@farmaciaferro.com
+
+## VITTORIA
+Farmacia Amica SRL → farmaciamicasrl@gmail.com
+Farmacia Bianculli → biancullifarmacia@gmail.com
+Farmacia Cali → farmacista.farmacali@outlook.com
+Farmacia Cannizzo → farmaciacannizzoelsamaria@virgilio.it
+Farmacia De Pasquale → farmadep@gmail.com
+Farmacia Guastella SNC → info@farmaciaguastella.com
+Farmacia Iacono G.A. → info@farmaciajacono.it
+Farmacia Incardona Luigi → incardona.farma@tiscali.it
+Farmacia Mangione → farmaciamangionerg@gmail.com
+Farmacia Michele Arcangelo SRL → farmacia.michelearcangelo90@gmail.com
+Farmacia Roma → farmaciaromavittoria@gmail.com
+Farmacia Roma 2 → circolarifarmaroma@gmail.com
+Farmacia Vittoria 15 → farmaciavittoria15@gmail.com
+
+========================================================================
+==  EMAIL NON INVIATE / CON NOTE  (2)
+========================================================================
+
+## RAGUSA
+Farmacia Sciveres → m.sciveres@alice.it   [da inviare - fonte: etic.travelnostop.com]
+
+## MODICA
+Farmacia Veninata → luisa.veninata@gmail.com   [da inviare - Federfarma: 18763@pec2.federfarma.it]
+
+========================================================================
+==  EMAIL DA VERIFICARE — ❌ senza fonte pubblica  (12)
+========================================================================
+
+## COMISO
+Farmacia Albani → nuccioxxx@yahoo.it
+
+## ISPICA
+Farmacia Cassar Scalia → scaliaco@tiscali.it
+
+## MODICA
+Farmacia Mantegna → p.mantegna@tiscali.it
+Farmacia Sacro Cuore Bioexor Group SRL → bioexorgroupsrl@gmail.com
+
+## RAGUSA
+Farmacia C. Ottaviano → concettaottaviano@alice.it
+Farmacia Occhipinti → farmaciaocchipinti@hotmail.it
+Farmacia Ottaviano G. → ottaviano@tin.it
+Farmacia Ragusa 22 SRL → farmaciaragusa22srl@libero.it
+
+## SCICLI
+Farmacia Pacetto → farmaciapacetto.amministrazione@gmail.com
+
+## SCOGLITTI
+Farmacia I. Iacono → ivana.iacono@alice.it
+
+## VITTORIA
+Farmacia Emaia → farmacia.emaia@virgilio.it
+Farmacia Spiteri → consolataspiteri@gmail.com

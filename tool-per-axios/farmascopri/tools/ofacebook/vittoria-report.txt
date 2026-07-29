@@ -1,0 +1,743 @@
+================================================================================
+  FACEBOOK OSINT SCAN — FARMACIE VITTORIA
+  Via ofacebook prefix library
+  Target: 13 farmacie
+================================================================================
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Amica SRL
+  📧 farmaciamicasrl@gmail.com
+  🔗 FB noto: https://www.facebook.com/p/Farmacia-Amica-100057152632043/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: Farmacia-Amica-100057152632043, farmaciamicasrl, farmaciaamicasrl, amicasrl, amica.srl, amica-srl
+
+  ── @Farmacia-Amica-100057152632043 ──
+    https://mbasic.facebook.com/Farmacia-Amica-100057152632043
+    https://m.facebook.com/Farmacia-Amica-100057152632043
+    https://touch.facebook.com/Farmacia-Amica-100057152632043
+    https://www.facebook.com/Farmacia-Amica-100057152632043
+    https://lite.facebook.com/Farmacia-Amica-100057152632043
+    https://zero.facebook.com/Farmacia-Amica-100057152632043
+    https://free.facebook.com/Farmacia-Amica-100057152632043
+    https://iphone.facebook.com/Farmacia-Amica-100057152632043
+    https://l.facebook.com/Farmacia-Amica-100057152632043
+    https://lm.facebook.com/Farmacia-Amica-100057152632043
+    https://t.facebook.com/Farmacia-Amica-100057152632043
+    https://0.facebook.com/Farmacia-Amica-100057152632043
+    https://c.facebook.com/Farmacia-Amica-100057152632043
+    https://d.facebook.com/Farmacia-Amica-100057152632043
+    https://h.facebook.com/Farmacia-Amica-100057152632043
+  ── @farmaciamicasrl ──
+    https://mbasic.facebook.com/farmaciamicasrl
+    https://m.facebook.com/farmaciamicasrl
+    https://touch.facebook.com/farmaciamicasrl
+    https://www.facebook.com/farmaciamicasrl
+    https://lite.facebook.com/farmaciamicasrl
+    https://zero.facebook.com/farmaciamicasrl
+    https://free.facebook.com/farmaciamicasrl
+    https://iphone.facebook.com/farmaciamicasrl
+    https://l.facebook.com/farmaciamicasrl
+    https://lm.facebook.com/farmaciamicasrl
+    https://t.facebook.com/farmaciamicasrl
+    https://0.facebook.com/farmaciamicasrl
+    https://c.facebook.com/farmaciamicasrl
+    https://d.facebook.com/farmaciamicasrl
+    https://h.facebook.com/farmaciamicasrl
+  ── @farmaciaamicasrl ──
+    https://mbasic.facebook.com/farmaciaamicasrl
+    https://m.facebook.com/farmaciaamicasrl
+    https://touch.facebook.com/farmaciaamicasrl
+    https://www.facebook.com/farmaciaamicasrl
+    https://lite.facebook.com/farmaciaamicasrl
+    https://zero.facebook.com/farmaciaamicasrl
+    https://free.facebook.com/farmaciaamicasrl
+    https://iphone.facebook.com/farmaciaamicasrl
+    https://l.facebook.com/farmaciaamicasrl
+    https://lm.facebook.com/farmaciaamicasrl
+    https://t.facebook.com/farmaciaamicasrl
+    https://0.facebook.com/farmaciaamicasrl
+    https://c.facebook.com/farmaciaamicasrl
+    https://d.facebook.com/farmaciaamicasrl
+    https://h.facebook.com/farmaciaamicasrl
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Bianculli
+  📧 biancullifarmacia@gmail.com
+  🔗 FB noto: https://www.facebook.com/farmacia.bianculli/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmacia.bianculli, farmacibianculli, farmaciabianculli, bianculli, biancullifarmacia
+
+  ── @farmacia.bianculli ──
+    https://mbasic.facebook.com/farmacia.bianculli
+    https://m.facebook.com/farmacia.bianculli
+    https://touch.facebook.com/farmacia.bianculli
+    https://www.facebook.com/farmacia.bianculli
+    https://lite.facebook.com/farmacia.bianculli
+    https://zero.facebook.com/farmacia.bianculli
+    https://free.facebook.com/farmacia.bianculli
+    https://iphone.facebook.com/farmacia.bianculli
+    https://l.facebook.com/farmacia.bianculli
+    https://lm.facebook.com/farmacia.bianculli
+    https://t.facebook.com/farmacia.bianculli
+    https://0.facebook.com/farmacia.bianculli
+    https://c.facebook.com/farmacia.bianculli
+    https://d.facebook.com/farmacia.bianculli
+    https://h.facebook.com/farmacia.bianculli
+  ── @farmacibianculli ──
+    https://mbasic.facebook.com/farmacibianculli
+    https://m.facebook.com/farmacibianculli
+    https://touch.facebook.com/farmacibianculli
+    https://www.facebook.com/farmacibianculli
+    https://lite.facebook.com/farmacibianculli
+    https://zero.facebook.com/farmacibianculli
+    https://free.facebook.com/farmacibianculli
+    https://iphone.facebook.com/farmacibianculli
+    https://l.facebook.com/farmacibianculli
+    https://lm.facebook.com/farmacibianculli
+    https://t.facebook.com/farmacibianculli
+    https://0.facebook.com/farmacibianculli
+    https://c.facebook.com/farmacibianculli
+    https://d.facebook.com/farmacibianculli
+    https://h.facebook.com/farmacibianculli
+  ── @farmaciabianculli ──
+    https://mbasic.facebook.com/farmaciabianculli
+    https://m.facebook.com/farmaciabianculli
+    https://touch.facebook.com/farmaciabianculli
+    https://www.facebook.com/farmaciabianculli
+    https://lite.facebook.com/farmaciabianculli
+    https://zero.facebook.com/farmaciabianculli
+    https://free.facebook.com/farmaciabianculli
+    https://iphone.facebook.com/farmaciabianculli
+    https://l.facebook.com/farmaciabianculli
+    https://lm.facebook.com/farmaciabianculli
+    https://t.facebook.com/farmaciabianculli
+    https://0.facebook.com/farmaciabianculli
+    https://c.facebook.com/farmaciabianculli
+    https://d.facebook.com/farmaciabianculli
+    https://h.facebook.com/farmaciabianculli
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Calí-Mancuso
+  📧 farmacista.farmacali@outlook.com
+  🔗 FB noto: https://www.facebook.com/farmacia.cali.3/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmacia.cali.3, farmacicalmancuso, farmaciacalmancuso, calmancuso, cal.mancuso, cal-mancuso, farmacista.farmacali
+
+  ── @farmacia.cali.3 ──
+    https://mbasic.facebook.com/farmacia.cali.3
+    https://m.facebook.com/farmacia.cali.3
+    https://touch.facebook.com/farmacia.cali.3
+    https://www.facebook.com/farmacia.cali.3
+    https://lite.facebook.com/farmacia.cali.3
+    https://zero.facebook.com/farmacia.cali.3
+    https://free.facebook.com/farmacia.cali.3
+    https://iphone.facebook.com/farmacia.cali.3
+    https://l.facebook.com/farmacia.cali.3
+    https://lm.facebook.com/farmacia.cali.3
+    https://t.facebook.com/farmacia.cali.3
+    https://0.facebook.com/farmacia.cali.3
+    https://c.facebook.com/farmacia.cali.3
+    https://d.facebook.com/farmacia.cali.3
+    https://h.facebook.com/farmacia.cali.3
+  ── @farmacicalmancuso ──
+    https://mbasic.facebook.com/farmacicalmancuso
+    https://m.facebook.com/farmacicalmancuso
+    https://touch.facebook.com/farmacicalmancuso
+    https://www.facebook.com/farmacicalmancuso
+    https://lite.facebook.com/farmacicalmancuso
+    https://zero.facebook.com/farmacicalmancuso
+    https://free.facebook.com/farmacicalmancuso
+    https://iphone.facebook.com/farmacicalmancuso
+    https://l.facebook.com/farmacicalmancuso
+    https://lm.facebook.com/farmacicalmancuso
+    https://t.facebook.com/farmacicalmancuso
+    https://0.facebook.com/farmacicalmancuso
+    https://c.facebook.com/farmacicalmancuso
+    https://d.facebook.com/farmacicalmancuso
+    https://h.facebook.com/farmacicalmancuso
+  ── @farmaciacalmancuso ──
+    https://mbasic.facebook.com/farmaciacalmancuso
+    https://m.facebook.com/farmaciacalmancuso
+    https://touch.facebook.com/farmaciacalmancuso
+    https://www.facebook.com/farmaciacalmancuso
+    https://lite.facebook.com/farmaciacalmancuso
+    https://zero.facebook.com/farmaciacalmancuso
+    https://free.facebook.com/farmaciacalmancuso
+    https://iphone.facebook.com/farmaciacalmancuso
+    https://l.facebook.com/farmaciacalmancuso
+    https://lm.facebook.com/farmaciacalmancuso
+    https://t.facebook.com/farmaciacalmancuso
+    https://0.facebook.com/farmaciacalmancuso
+    https://c.facebook.com/farmaciacalmancuso
+    https://d.facebook.com/farmaciacalmancuso
+    https://h.facebook.com/farmaciacalmancuso
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Cannizzo
+  📧 farmaciacannizzoelsamaria@virgilio.it
+  🔗 FB noto: https://www.facebook.com/p/Farmacia-Cannizzo-100048470153425/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: Farmacia-Cannizzo-100048470153425, farmacicannizzo, farmaciacannizzo, cannizzo, farmaciacannizzoelsamaria
+
+  ── @Farmacia-Cannizzo-100048470153425 ──
+    https://mbasic.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://m.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://touch.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://www.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://lite.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://zero.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://free.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://iphone.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://l.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://lm.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://t.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://0.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://c.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://d.facebook.com/Farmacia-Cannizzo-100048470153425
+    https://h.facebook.com/Farmacia-Cannizzo-100048470153425
+  ── @farmacicannizzo ──
+    https://mbasic.facebook.com/farmacicannizzo
+    https://m.facebook.com/farmacicannizzo
+    https://touch.facebook.com/farmacicannizzo
+    https://www.facebook.com/farmacicannizzo
+    https://lite.facebook.com/farmacicannizzo
+    https://zero.facebook.com/farmacicannizzo
+    https://free.facebook.com/farmacicannizzo
+    https://iphone.facebook.com/farmacicannizzo
+    https://l.facebook.com/farmacicannizzo
+    https://lm.facebook.com/farmacicannizzo
+    https://t.facebook.com/farmacicannizzo
+    https://0.facebook.com/farmacicannizzo
+    https://c.facebook.com/farmacicannizzo
+    https://d.facebook.com/farmacicannizzo
+    https://h.facebook.com/farmacicannizzo
+  ── @farmaciacannizzo ──
+    https://mbasic.facebook.com/farmaciacannizzo
+    https://m.facebook.com/farmaciacannizzo
+    https://touch.facebook.com/farmaciacannizzo
+    https://www.facebook.com/farmaciacannizzo
+    https://lite.facebook.com/farmaciacannizzo
+    https://zero.facebook.com/farmaciacannizzo
+    https://free.facebook.com/farmaciacannizzo
+    https://iphone.facebook.com/farmaciacannizzo
+    https://l.facebook.com/farmaciacannizzo
+    https://lm.facebook.com/farmaciacannizzo
+    https://t.facebook.com/farmaciacannizzo
+    https://0.facebook.com/farmaciacannizzo
+    https://c.facebook.com/farmaciacannizzo
+    https://d.facebook.com/farmaciacannizzo
+    https://h.facebook.com/farmaciacannizzo
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 De Pasquale
+  📧 farmadep@gmail.com
+  🔗 FB noto: https://www.facebook.com/farmadepasquale/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmadepasquale, farmacidepasquale, farmaciadepasquale, depasquale, de.pasquale, de-pasquale, farmadep
+
+  ── @farmadepasquale ──
+    https://mbasic.facebook.com/farmadepasquale
+    https://m.facebook.com/farmadepasquale
+    https://touch.facebook.com/farmadepasquale
+    https://www.facebook.com/farmadepasquale
+    https://lite.facebook.com/farmadepasquale
+    https://zero.facebook.com/farmadepasquale
+    https://free.facebook.com/farmadepasquale
+    https://iphone.facebook.com/farmadepasquale
+    https://l.facebook.com/farmadepasquale
+    https://lm.facebook.com/farmadepasquale
+    https://t.facebook.com/farmadepasquale
+    https://0.facebook.com/farmadepasquale
+    https://c.facebook.com/farmadepasquale
+    https://d.facebook.com/farmadepasquale
+    https://h.facebook.com/farmadepasquale
+  ── @farmacidepasquale ──
+    https://mbasic.facebook.com/farmacidepasquale
+    https://m.facebook.com/farmacidepasquale
+    https://touch.facebook.com/farmacidepasquale
+    https://www.facebook.com/farmacidepasquale
+    https://lite.facebook.com/farmacidepasquale
+    https://zero.facebook.com/farmacidepasquale
+    https://free.facebook.com/farmacidepasquale
+    https://iphone.facebook.com/farmacidepasquale
+    https://l.facebook.com/farmacidepasquale
+    https://lm.facebook.com/farmacidepasquale
+    https://t.facebook.com/farmacidepasquale
+    https://0.facebook.com/farmacidepasquale
+    https://c.facebook.com/farmacidepasquale
+    https://d.facebook.com/farmacidepasquale
+    https://h.facebook.com/farmacidepasquale
+  ── @farmaciadepasquale ──
+    https://mbasic.facebook.com/farmaciadepasquale
+    https://m.facebook.com/farmaciadepasquale
+    https://touch.facebook.com/farmaciadepasquale
+    https://www.facebook.com/farmaciadepasquale
+    https://lite.facebook.com/farmaciadepasquale
+    https://zero.facebook.com/farmaciadepasquale
+    https://free.facebook.com/farmaciadepasquale
+    https://iphone.facebook.com/farmaciadepasquale
+    https://l.facebook.com/farmaciadepasquale
+    https://lm.facebook.com/farmaciadepasquale
+    https://t.facebook.com/farmaciadepasquale
+    https://0.facebook.com/farmaciadepasquale
+    https://c.facebook.com/farmaciadepasquale
+    https://d.facebook.com/farmaciadepasquale
+    https://h.facebook.com/farmaciadepasquale
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Emaia
+  📧 farmacia.emaia@virgilio.it
+  🔗 FB noto: https://www.facebook.com/p/Farmacia-Emaia-100063644186184/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: Farmacia-Emaia-100063644186184, farmaciemaia, farmaciaemaia, emaia, farmacia.emaia
+
+  ── @Farmacia-Emaia-100063644186184 ──
+    https://mbasic.facebook.com/Farmacia-Emaia-100063644186184
+    https://m.facebook.com/Farmacia-Emaia-100063644186184
+    https://touch.facebook.com/Farmacia-Emaia-100063644186184
+    https://www.facebook.com/Farmacia-Emaia-100063644186184
+    https://lite.facebook.com/Farmacia-Emaia-100063644186184
+    https://zero.facebook.com/Farmacia-Emaia-100063644186184
+    https://free.facebook.com/Farmacia-Emaia-100063644186184
+    https://iphone.facebook.com/Farmacia-Emaia-100063644186184
+    https://l.facebook.com/Farmacia-Emaia-100063644186184
+    https://lm.facebook.com/Farmacia-Emaia-100063644186184
+    https://t.facebook.com/Farmacia-Emaia-100063644186184
+    https://0.facebook.com/Farmacia-Emaia-100063644186184
+    https://c.facebook.com/Farmacia-Emaia-100063644186184
+    https://d.facebook.com/Farmacia-Emaia-100063644186184
+    https://h.facebook.com/Farmacia-Emaia-100063644186184
+  ── @farmaciemaia ──
+    https://mbasic.facebook.com/farmaciemaia
+    https://m.facebook.com/farmaciemaia
+    https://touch.facebook.com/farmaciemaia
+    https://www.facebook.com/farmaciemaia
+    https://lite.facebook.com/farmaciemaia
+    https://zero.facebook.com/farmaciemaia
+    https://free.facebook.com/farmaciemaia
+    https://iphone.facebook.com/farmaciemaia
+    https://l.facebook.com/farmaciemaia
+    https://lm.facebook.com/farmaciemaia
+    https://t.facebook.com/farmaciemaia
+    https://0.facebook.com/farmaciemaia
+    https://c.facebook.com/farmaciemaia
+    https://d.facebook.com/farmaciemaia
+    https://h.facebook.com/farmaciemaia
+  ── @farmaciaemaia ──
+    https://mbasic.facebook.com/farmaciaemaia
+    https://m.facebook.com/farmaciaemaia
+    https://touch.facebook.com/farmaciaemaia
+    https://www.facebook.com/farmaciaemaia
+    https://lite.facebook.com/farmaciaemaia
+    https://zero.facebook.com/farmaciaemaia
+    https://free.facebook.com/farmaciaemaia
+    https://iphone.facebook.com/farmaciaemaia
+    https://l.facebook.com/farmaciaemaia
+    https://lm.facebook.com/farmaciaemaia
+    https://t.facebook.com/farmaciaemaia
+    https://0.facebook.com/farmaciaemaia
+    https://c.facebook.com/farmaciaemaia
+    https://d.facebook.com/farmaciaemaia
+    https://h.facebook.com/farmaciaemaia
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Guastella SNC
+  📧 info@farmaciaguastella.com
+  🔗 FB noto: https://www.facebook.com/p/Farmacia-Guastella-100063568809250/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: Farmacia-Guastella-100063568809250, farmaciguastellasnc, farmaciaguastellasnc, guastellasnc, guastella.snc, guastella-snc, info
+
+  ── @Farmacia-Guastella-100063568809250 ──
+    https://mbasic.facebook.com/Farmacia-Guastella-100063568809250
+    https://m.facebook.com/Farmacia-Guastella-100063568809250
+    https://touch.facebook.com/Farmacia-Guastella-100063568809250
+    https://www.facebook.com/Farmacia-Guastella-100063568809250
+    https://lite.facebook.com/Farmacia-Guastella-100063568809250
+    https://zero.facebook.com/Farmacia-Guastella-100063568809250
+    https://free.facebook.com/Farmacia-Guastella-100063568809250
+    https://iphone.facebook.com/Farmacia-Guastella-100063568809250
+    https://l.facebook.com/Farmacia-Guastella-100063568809250
+    https://lm.facebook.com/Farmacia-Guastella-100063568809250
+    https://t.facebook.com/Farmacia-Guastella-100063568809250
+    https://0.facebook.com/Farmacia-Guastella-100063568809250
+    https://c.facebook.com/Farmacia-Guastella-100063568809250
+    https://d.facebook.com/Farmacia-Guastella-100063568809250
+    https://h.facebook.com/Farmacia-Guastella-100063568809250
+  ── @farmaciguastellasnc ──
+    https://mbasic.facebook.com/farmaciguastellasnc
+    https://m.facebook.com/farmaciguastellasnc
+    https://touch.facebook.com/farmaciguastellasnc
+    https://www.facebook.com/farmaciguastellasnc
+    https://lite.facebook.com/farmaciguastellasnc
+    https://zero.facebook.com/farmaciguastellasnc
+    https://free.facebook.com/farmaciguastellasnc
+    https://iphone.facebook.com/farmaciguastellasnc
+    https://l.facebook.com/farmaciguastellasnc
+    https://lm.facebook.com/farmaciguastellasnc
+    https://t.facebook.com/farmaciguastellasnc
+    https://0.facebook.com/farmaciguastellasnc
+    https://c.facebook.com/farmaciguastellasnc
+    https://d.facebook.com/farmaciguastellasnc
+    https://h.facebook.com/farmaciguastellasnc
+  ── @farmaciaguastellasnc ──
+    https://mbasic.facebook.com/farmaciaguastellasnc
+    https://m.facebook.com/farmaciaguastellasnc
+    https://touch.facebook.com/farmaciaguastellasnc
+    https://www.facebook.com/farmaciaguastellasnc
+    https://lite.facebook.com/farmaciaguastellasnc
+    https://zero.facebook.com/farmaciaguastellasnc
+    https://free.facebook.com/farmaciaguastellasnc
+    https://iphone.facebook.com/farmaciaguastellasnc
+    https://l.facebook.com/farmaciaguastellasnc
+    https://lm.facebook.com/farmaciaguastellasnc
+    https://t.facebook.com/farmaciaguastellasnc
+    https://0.facebook.com/farmaciaguastellasnc
+    https://c.facebook.com/farmaciaguastellasnc
+    https://d.facebook.com/farmaciaguastellasnc
+    https://h.facebook.com/farmaciaguastellasnc
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Iacono G.A.
+  📧 info@farmaciajacono.it
+  🔗 FB noto: https://www.facebook.com/farmacia.jacono/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmacia.jacono, farmaciiaconoga, farmaciaiaconoga, iaconoga, iacono.g.a, iacono-g-a, info
+
+  ── @farmacia.jacono ──
+    https://mbasic.facebook.com/farmacia.jacono
+    https://m.facebook.com/farmacia.jacono
+    https://touch.facebook.com/farmacia.jacono
+    https://www.facebook.com/farmacia.jacono
+    https://lite.facebook.com/farmacia.jacono
+    https://zero.facebook.com/farmacia.jacono
+    https://free.facebook.com/farmacia.jacono
+    https://iphone.facebook.com/farmacia.jacono
+    https://l.facebook.com/farmacia.jacono
+    https://lm.facebook.com/farmacia.jacono
+    https://t.facebook.com/farmacia.jacono
+    https://0.facebook.com/farmacia.jacono
+    https://c.facebook.com/farmacia.jacono
+    https://d.facebook.com/farmacia.jacono
+    https://h.facebook.com/farmacia.jacono
+  ── @farmaciiaconoga ──
+    https://mbasic.facebook.com/farmaciiaconoga
+    https://m.facebook.com/farmaciiaconoga
+    https://touch.facebook.com/farmaciiaconoga
+    https://www.facebook.com/farmaciiaconoga
+    https://lite.facebook.com/farmaciiaconoga
+    https://zero.facebook.com/farmaciiaconoga
+    https://free.facebook.com/farmaciiaconoga
+    https://iphone.facebook.com/farmaciiaconoga
+    https://l.facebook.com/farmaciiaconoga
+    https://lm.facebook.com/farmaciiaconoga
+    https://t.facebook.com/farmaciiaconoga
+    https://0.facebook.com/farmaciiaconoga
+    https://c.facebook.com/farmaciiaconoga
+    https://d.facebook.com/farmaciiaconoga
+    https://h.facebook.com/farmaciiaconoga
+  ── @farmaciaiaconoga ──
+    https://mbasic.facebook.com/farmaciaiaconoga
+    https://m.facebook.com/farmaciaiaconoga
+    https://touch.facebook.com/farmaciaiaconoga
+    https://www.facebook.com/farmaciaiaconoga
+    https://lite.facebook.com/farmaciaiaconoga
+    https://zero.facebook.com/farmaciaiaconoga
+    https://free.facebook.com/farmaciaiaconoga
+    https://iphone.facebook.com/farmaciaiaconoga
+    https://l.facebook.com/farmaciaiaconoga
+    https://lm.facebook.com/farmaciaiaconoga
+    https://t.facebook.com/farmaciaiaconoga
+    https://0.facebook.com/farmaciaiaconoga
+    https://c.facebook.com/farmaciaiaconoga
+    https://d.facebook.com/farmaciaiaconoga
+    https://h.facebook.com/farmaciaiaconoga
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Incardona Luigi
+  📧 incardona.farma@tiscali.it
+  🔗 FB noto: https://www.facebook.com/farmacia.incardona/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmacia.incardona, farmaciincardonaluigi, farmaciaincardonaluigi, incardonaluigi, incardona.luigi, incardona-luigi, incardona.farma
+
+  ── @farmacia.incardona ──
+    https://mbasic.facebook.com/farmacia.incardona
+    https://m.facebook.com/farmacia.incardona
+    https://touch.facebook.com/farmacia.incardona
+    https://www.facebook.com/farmacia.incardona
+    https://lite.facebook.com/farmacia.incardona
+    https://zero.facebook.com/farmacia.incardona
+    https://free.facebook.com/farmacia.incardona
+    https://iphone.facebook.com/farmacia.incardona
+    https://l.facebook.com/farmacia.incardona
+    https://lm.facebook.com/farmacia.incardona
+    https://t.facebook.com/farmacia.incardona
+    https://0.facebook.com/farmacia.incardona
+    https://c.facebook.com/farmacia.incardona
+    https://d.facebook.com/farmacia.incardona
+    https://h.facebook.com/farmacia.incardona
+  ── @farmaciincardonaluigi ──
+    https://mbasic.facebook.com/farmaciincardonaluigi
+    https://m.facebook.com/farmaciincardonaluigi
+    https://touch.facebook.com/farmaciincardonaluigi
+    https://www.facebook.com/farmaciincardonaluigi
+    https://lite.facebook.com/farmaciincardonaluigi
+    https://zero.facebook.com/farmaciincardonaluigi
+    https://free.facebook.com/farmaciincardonaluigi
+    https://iphone.facebook.com/farmaciincardonaluigi
+    https://l.facebook.com/farmaciincardonaluigi
+    https://lm.facebook.com/farmaciincardonaluigi
+    https://t.facebook.com/farmaciincardonaluigi
+    https://0.facebook.com/farmaciincardonaluigi
+    https://c.facebook.com/farmaciincardonaluigi
+    https://d.facebook.com/farmaciincardonaluigi
+    https://h.facebook.com/farmaciincardonaluigi
+  ── @farmaciaincardonaluigi ──
+    https://mbasic.facebook.com/farmaciaincardonaluigi
+    https://m.facebook.com/farmaciaincardonaluigi
+    https://touch.facebook.com/farmaciaincardonaluigi
+    https://www.facebook.com/farmaciaincardonaluigi
+    https://lite.facebook.com/farmaciaincardonaluigi
+    https://zero.facebook.com/farmaciaincardonaluigi
+    https://free.facebook.com/farmaciaincardonaluigi
+    https://iphone.facebook.com/farmaciaincardonaluigi
+    https://l.facebook.com/farmaciaincardonaluigi
+    https://lm.facebook.com/farmaciaincardonaluigi
+    https://t.facebook.com/farmaciaincardonaluigi
+    https://0.facebook.com/farmaciaincardonaluigi
+    https://c.facebook.com/farmaciaincardonaluigi
+    https://d.facebook.com/farmaciaincardonaluigi
+    https://h.facebook.com/farmaciaincardonaluigi
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Mangione
+  📧 farmaciamangionerg@gmail.com
+  🔗 FB noto: https://www.facebook.com/FarmaciaMangione/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: FarmaciaMangione, farmacimangione, farmaciamangione, mangione, farmaciamangionerg
+
+  ── @FarmaciaMangione ──
+    https://mbasic.facebook.com/FarmaciaMangione
+    https://m.facebook.com/FarmaciaMangione
+    https://touch.facebook.com/FarmaciaMangione
+    https://www.facebook.com/FarmaciaMangione
+    https://lite.facebook.com/FarmaciaMangione
+    https://zero.facebook.com/FarmaciaMangione
+    https://free.facebook.com/FarmaciaMangione
+    https://iphone.facebook.com/FarmaciaMangione
+    https://l.facebook.com/FarmaciaMangione
+    https://lm.facebook.com/FarmaciaMangione
+    https://t.facebook.com/FarmaciaMangione
+    https://0.facebook.com/FarmaciaMangione
+    https://c.facebook.com/FarmaciaMangione
+    https://d.facebook.com/FarmaciaMangione
+    https://h.facebook.com/FarmaciaMangione
+  ── @farmacimangione ──
+    https://mbasic.facebook.com/farmacimangione
+    https://m.facebook.com/farmacimangione
+    https://touch.facebook.com/farmacimangione
+    https://www.facebook.com/farmacimangione
+    https://lite.facebook.com/farmacimangione
+    https://zero.facebook.com/farmacimangione
+    https://free.facebook.com/farmacimangione
+    https://iphone.facebook.com/farmacimangione
+    https://l.facebook.com/farmacimangione
+    https://lm.facebook.com/farmacimangione
+    https://t.facebook.com/farmacimangione
+    https://0.facebook.com/farmacimangione
+    https://c.facebook.com/farmacimangione
+    https://d.facebook.com/farmacimangione
+    https://h.facebook.com/farmacimangione
+  ── @farmaciamangione ──
+    https://mbasic.facebook.com/farmaciamangione
+    https://m.facebook.com/farmaciamangione
+    https://touch.facebook.com/farmaciamangione
+    https://www.facebook.com/farmaciamangione
+    https://lite.facebook.com/farmaciamangione
+    https://zero.facebook.com/farmaciamangione
+    https://free.facebook.com/farmaciamangione
+    https://iphone.facebook.com/farmaciamangione
+    https://l.facebook.com/farmaciamangione
+    https://lm.facebook.com/farmaciamangione
+    https://t.facebook.com/farmaciamangione
+    https://0.facebook.com/farmaciamangione
+    https://c.facebook.com/farmaciamangione
+    https://d.facebook.com/farmaciamangione
+    https://h.facebook.com/farmaciamangione
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Michele Arcangelo SRL
+  📧 farmacia.michelearcangelo90@gmail.com
+  🔗 FB noto: https://www.facebook.com/farmaciamichelearcangelovittoria/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmaciamichelearcangelovittoria, farmacimichelearcangelosrl, farmaciamichelearcangelosrl, michelearcangelosrl, michele.arcangelo.srl, michele-arcangelo-srl, farmacia.michelearcangelo90
+
+  ── @farmaciamichelearcangelovittoria ──
+    https://mbasic.facebook.com/farmaciamichelearcangelovittoria
+    https://m.facebook.com/farmaciamichelearcangelovittoria
+    https://touch.facebook.com/farmaciamichelearcangelovittoria
+    https://www.facebook.com/farmaciamichelearcangelovittoria
+    https://lite.facebook.com/farmaciamichelearcangelovittoria
+    https://zero.facebook.com/farmaciamichelearcangelovittoria
+    https://free.facebook.com/farmaciamichelearcangelovittoria
+    https://iphone.facebook.com/farmaciamichelearcangelovittoria
+    https://l.facebook.com/farmaciamichelearcangelovittoria
+    https://lm.facebook.com/farmaciamichelearcangelovittoria
+    https://t.facebook.com/farmaciamichelearcangelovittoria
+    https://0.facebook.com/farmaciamichelearcangelovittoria
+    https://c.facebook.com/farmaciamichelearcangelovittoria
+    https://d.facebook.com/farmaciamichelearcangelovittoria
+    https://h.facebook.com/farmaciamichelearcangelovittoria
+  ── @farmacimichelearcangelosrl ──
+    https://mbasic.facebook.com/farmacimichelearcangelosrl
+    https://m.facebook.com/farmacimichelearcangelosrl
+    https://touch.facebook.com/farmacimichelearcangelosrl
+    https://www.facebook.com/farmacimichelearcangelosrl
+    https://lite.facebook.com/farmacimichelearcangelosrl
+    https://zero.facebook.com/farmacimichelearcangelosrl
+    https://free.facebook.com/farmacimichelearcangelosrl
+    https://iphone.facebook.com/farmacimichelearcangelosrl
+    https://l.facebook.com/farmacimichelearcangelosrl
+    https://lm.facebook.com/farmacimichelearcangelosrl
+    https://t.facebook.com/farmacimichelearcangelosrl
+    https://0.facebook.com/farmacimichelearcangelosrl
+    https://c.facebook.com/farmacimichelearcangelosrl
+    https://d.facebook.com/farmacimichelearcangelosrl
+    https://h.facebook.com/farmacimichelearcangelosrl
+  ── @farmaciamichelearcangelosrl ──
+    https://mbasic.facebook.com/farmaciamichelearcangelosrl
+    https://m.facebook.com/farmaciamichelearcangelosrl
+    https://touch.facebook.com/farmaciamichelearcangelosrl
+    https://www.facebook.com/farmaciamichelearcangelosrl
+    https://lite.facebook.com/farmaciamichelearcangelosrl
+    https://zero.facebook.com/farmaciamichelearcangelosrl
+    https://free.facebook.com/farmaciamichelearcangelosrl
+    https://iphone.facebook.com/farmaciamichelearcangelosrl
+    https://l.facebook.com/farmaciamichelearcangelosrl
+    https://lm.facebook.com/farmaciamichelearcangelosrl
+    https://t.facebook.com/farmaciamichelearcangelosrl
+    https://0.facebook.com/farmaciamichelearcangelosrl
+    https://c.facebook.com/farmaciamichelearcangelosrl
+    https://d.facebook.com/farmaciamichelearcangelosrl
+    https://h.facebook.com/farmaciamichelearcangelosrl
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Roma
+  📧 farmaciaromavittoria@gmail.com
+  🔗 FB noto: https://www.facebook.com/farmaciaromavittoria/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmaciroma, farmaciaroma, roma, farmaciaromavittoria
+
+  ── @farmaciroma ──
+    https://mbasic.facebook.com/farmaciroma
+    https://m.facebook.com/farmaciroma
+    https://touch.facebook.com/farmaciroma
+    https://www.facebook.com/farmaciroma
+    https://lite.facebook.com/farmaciroma
+    https://zero.facebook.com/farmaciroma
+    https://free.facebook.com/farmaciroma
+    https://iphone.facebook.com/farmaciroma
+    https://l.facebook.com/farmaciroma
+    https://lm.facebook.com/farmaciroma
+    https://t.facebook.com/farmaciroma
+    https://0.facebook.com/farmaciroma
+    https://c.facebook.com/farmaciroma
+    https://d.facebook.com/farmaciroma
+    https://h.facebook.com/farmaciroma
+  ── @farmaciaroma ──
+    https://mbasic.facebook.com/farmaciaroma
+    https://m.facebook.com/farmaciaroma
+    https://touch.facebook.com/farmaciaroma
+    https://www.facebook.com/farmaciaroma
+    https://lite.facebook.com/farmaciaroma
+    https://zero.facebook.com/farmaciaroma
+    https://free.facebook.com/farmaciaroma
+    https://iphone.facebook.com/farmaciaroma
+    https://l.facebook.com/farmaciaroma
+    https://lm.facebook.com/farmaciaroma
+    https://t.facebook.com/farmaciaroma
+    https://0.facebook.com/farmaciaroma
+    https://c.facebook.com/farmaciaroma
+    https://d.facebook.com/farmaciaroma
+    https://h.facebook.com/farmaciaroma
+  ── @roma ──
+    https://mbasic.facebook.com/roma
+    https://m.facebook.com/roma
+    https://touch.facebook.com/roma
+    https://www.facebook.com/roma
+    https://lite.facebook.com/roma
+    https://zero.facebook.com/roma
+    https://free.facebook.com/roma
+    https://iphone.facebook.com/roma
+    https://l.facebook.com/roma
+    https://lm.facebook.com/roma
+    https://t.facebook.com/roma
+    https://0.facebook.com/roma
+    https://c.facebook.com/roma
+    https://d.facebook.com/roma
+    https://h.facebook.com/roma
+
+────────────────────────────────────────────────────────────────────────────────
+  🏥 Vittoria 15
+  📧 farmaciavitroria15@gmail.com
+  🔗 FB noto: https://www.facebook.com/farmaciavittoria15/
+────────────────────────────────────────────────────────────────────────────────
+  Username variants: farmacivittoria15, farmaciavittoria15, vittoria15, vittoria.15, vittoria-15, farmaciavitroria15
+
+  ── @farmacivittoria15 ──
+    https://mbasic.facebook.com/farmacivittoria15
+    https://m.facebook.com/farmacivittoria15
+    https://touch.facebook.com/farmacivittoria15
+    https://www.facebook.com/farmacivittoria15
+    https://lite.facebook.com/farmacivittoria15
+    https://zero.facebook.com/farmacivittoria15
+    https://free.facebook.com/farmacivittoria15
+    https://iphone.facebook.com/farmacivittoria15
+    https://l.facebook.com/farmacivittoria15
+    https://lm.facebook.com/farmacivittoria15
+    https://t.facebook.com/farmacivittoria15
+    https://0.facebook.com/farmacivittoria15
+    https://c.facebook.com/farmacivittoria15
+    https://d.facebook.com/farmacivittoria15
+    https://h.facebook.com/farmacivittoria15
+  ── @farmaciavittoria15 ──
+    https://mbasic.facebook.com/farmaciavittoria15
+    https://m.facebook.com/farmaciavittoria15
+    https://touch.facebook.com/farmaciavittoria15
+    https://www.facebook.com/farmaciavittoria15
+    https://lite.facebook.com/farmaciavittoria15
+    https://zero.facebook.com/farmaciavittoria15
+    https://free.facebook.com/farmaciavittoria15
+    https://iphone.facebook.com/farmaciavittoria15
+    https://l.facebook.com/farmaciavittoria15
+    https://lm.facebook.com/farmaciavittoria15
+    https://t.facebook.com/farmaciavittoria15
+    https://0.facebook.com/farmaciavittoria15
+    https://c.facebook.com/farmaciavittoria15
+    https://d.facebook.com/farmaciavittoria15
+    https://h.facebook.com/farmaciavittoria15
+  ── @vittoria15 ──
+    https://mbasic.facebook.com/vittoria15
+    https://m.facebook.com/vittoria15
+    https://touch.facebook.com/vittoria15
+    https://www.facebook.com/vittoria15
+    https://lite.facebook.com/vittoria15
+    https://zero.facebook.com/vittoria15
+    https://free.facebook.com/vittoria15
+    https://iphone.facebook.com/vittoria15
+    https://l.facebook.com/vittoria15
+    https://lm.facebook.com/vittoria15
+    https://t.facebook.com/vittoria15
+    https://0.facebook.com/vittoria15
+    https://c.facebook.com/vittoria15
+    https://d.facebook.com/vittoria15
+    https://h.facebook.com/vittoria15
+
+================================================================================
+  SCAN COMPLETATO
+  Prefix usati: 27
+  Farmacie processate: 13
+================================================================================
+
+  📋 Per aprire i link: usa ofacebook webapp
+  💻 Avvia: python3 -m http.server 5173
+  🌐 Apri: http://localhost:5173
