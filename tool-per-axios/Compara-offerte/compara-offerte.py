@@ -48,7 +48,7 @@ import warnings as _warnings
 _warnings.filterwarnings("ignore", category=Warning)
 logging.captureWarnings(True)
 
-VERSION = "3.0.0"
+VERSION = "3.1.0"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 FARMACOPRI_DATA = os.path.join(
@@ -189,12 +189,34 @@ QUERY_TEMPLATES = [
 
 SITI_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "siti.md")
 
-# Pattern di ricerca per ogni dominio (Magento, WordPress, WooCommerce, custom)
+# Pattern URL prevedibili per piattaforme e-commerce (usati in _cerca_dominio_wrapper)
+# Provati in ordine prima del fallback homepage+form scraping.
 SEARCH_PATTERNS = [
+    # Magento
     "/catalogsearch/result/?q={slug}",
-    "/search?q={slug}",
+    # WordPress / WooCommerce
     "/?s={slug}",
-]  # soli 3 pattern, ordinati per frequenza
+    "/?s={slug}&post_type=product",
+    # PrestaShop
+    "/search?controller=search&s={slug}",
+    # Generici
+    "/search?q={slug}",
+    "/cerca?q={slug}",
+    "/ricerca?q={slug}",
+    "/cerca/{slug}",
+    "/search/{slug}",
+    "/ricerca/{slug}",
+    # Pharma / cataloghi
+    "/catalogo?search={slug}",
+    "/prodotti?search={slug}",
+    "/prodotti?cerca={slug}",
+    "/farmaci?search={slug}",
+    "/farmaci?nome={slug}",
+    "/offerte?search={slug}",
+    # Generic e-commerce
+    "/index.php?route=product/search&search={slug}",
+    "/category/search?q={slug}",
+]
 
 
 def carica_siti_md():
@@ -230,13 +252,13 @@ SITEMAP_PATHS = [
 ]
 
 
-def _scarica_e_cerca_in_sitemap(url, targets, max_bytes=6*1024*1024):
+def _scarica_e_cerca_in_sitemap(url, targets, max_bytes=3*1024*1024):
     """Scarica sitemap (max max_bytes), cerca URL con uno dei targets.
     Segue anche sitemap index (child in parallelo)."""
     found = []
     try:
         r = requests.get(url, headers={"User-Agent": USER_AGENT},
-                         timeout=8, verify=False, stream=True)
+                         timeout=5, verify=False, stream=True)
         if r.status_code >= 400:
             return found
 
@@ -389,38 +411,67 @@ def _cerca_dominio_wrapper(args):
                 if ris:
                     return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
                             "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
-        
-        # 2) Fallback: homepage + form search
+    
+    # 2) Prova SEARCH_PATTERNS in PARALLELO (18 pattern, ~1.5s totali invece di 27s)
+    from concurrent.futures import ThreadPoolExecutor as _TPE, as_completed as _AC
+    def _prova_pattern(pat):
+        pu = base + pat.replace("{slug}", slug)
         try:
-            rh = requests.get(base, headers={"User-Agent": USER_AGENT},
-                              timeout=3, verify=False)
-            if rh.status_code < 400 and len(rh.text) > 500:
-                soup = BeautifulSoup(rh.text[:100000], "lxml")
-                for form in soup.find_all("form", action=True)[:3]:
-                    action = form["action"]
-                    search_base = action if action.startswith("http") else base.rstrip("/") + "/" + action.lstrip("/")
-                    for param in ["s", "q", "search", "query", "cerca"]:
-                        sep = "&" if "?" in search_base else "?"
-                        su = f"{search_base}{sep}{param}={slug}"
-                        try:
-                            rs = requests.get(su, headers={"User-Agent": USER_AGENT},
-                                              timeout=3, verify=False)
-                            if rs.status_code < 400 and len(rs.text) > 500:
-                                # Cerca link prodotto nella search page
-                                soup2 = BeautifulSoup(rs.text[:150000], "lxml")
-                                for a_tag in soup2.find_all("a", href=True):
-                                    atxt = a_tag.get_text(strip=True).lower()
-                                    if any(p in atxt for p in parole):
-                                        ah = a_tag["href"]
-                                        prod_url = ah if ah.startswith("http") else base.rstrip("/") + "/" + ah.lstrip("/")
-                                        ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
-                                        if ris:
-                                            return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
-                                                    "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
-                        except:
-                            pass
+            pr = requests.get(pu, headers={"User-Agent": USER_AGENT},
+                              timeout=1.5, verify=False, allow_redirects=True)
+            if pr.status_code < 400 and len(pr.text) > 500:
+                soup = BeautifulSoup(pr.text[:150000], "lxml")
+                for a_tag in soup.find_all("a", href=True):
+                    atxt = a_tag.get_text(strip=True).lower()
+                    if any(p in atxt for p in parole):
+                        ah = a_tag["href"]
+                        prod_url = ah if ah.startswith("http") else base.rstrip("/") + "/" + ah.lstrip("/")
+                        ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
+                        if ris:
+                            return (pat, prod_url, ris)
         except:
             pass
+        return None
+    with _TPE(max_workers=min(18, len(SEARCH_PATTERNS))) as _ppool:
+        _futs = {_ppool.submit(_prova_pattern, p): p for p in SEARCH_PATTERNS}
+        for _f in _AC(_futs):
+            _ris = _f.result()
+            if _ris:
+                pat_found, prod_url, ris_prezzo = _ris
+                log(f"    {dom}: trovato via pattern {pat_found}", "~")
+                return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
+                        "_prezzo": f"€{ris_prezzo['prezzo']:.2f}", "_dom": dom}
+    
+    # 3) Fallback: homepage + form search (ultima spiaggia prima di DuckDuckGo)
+    try:
+        rh = requests.get(base, headers={"User-Agent": USER_AGENT},
+                          timeout=3, verify=False)
+        if rh.status_code < 400 and len(rh.text) > 500:
+            soup = BeautifulSoup(rh.text[:100000], "lxml")
+            for form in soup.find_all("form", action=True)[:3]:
+                action = form["action"]
+                search_base = action if action.startswith("http") else base.rstrip("/") + "/" + action.lstrip("/")
+                for param in ["s", "q", "search", "query", "cerca"]:
+                    sep = "&" if "?" in search_base else "?"
+                    su = f"{search_base}{sep}{param}={slug}"
+                    try:
+                        rs = requests.get(su, headers={"User-Agent": USER_AGENT},
+                                          timeout=3, verify=False)
+                        if rs.status_code < 400 and len(rs.text) > 500:
+                            soup2 = BeautifulSoup(rs.text[:150000], "lxml")
+                            for a_tag in soup2.find_all("a", href=True):
+                                atxt = a_tag.get_text(strip=True).lower()
+                                if any(p in atxt for p in parole):
+                                    ah = a_tag["href"]
+                                    prod_url = ah if ah.startswith("http") else base.rstrip("/") + "/" + ah.lstrip("/")
+                                    ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
+                                    if ris:
+                                        return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
+                                                "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
+                    except:
+                        pass
+    except:
+        pass
     
     return None
 
@@ -436,7 +487,7 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
     log(f"\nScansione {len(domini)} domini via sitemap...", "*")
     
     from concurrent.futures import ThreadPoolExecutor, as_completed
-    n_w = min(15, len(domini))  # 15 per non saturare banda sitemap
+    n_w = min(8, len(domini))  # 8 workers per banda (prima 15, troppo)
     
     siti = []
     with ThreadPoolExecutor(max_workers=n_w) as pool:
@@ -449,12 +500,15 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
                 ris = f.result()
                 if ris:
                     siti.append(ris)
+                    if len(siti) >= max_siti:
+                        # Early exit: cancella worker rimanenti
+                        for ff in futuri:
+                            ff.cancel()
+                        break
             except:
                 pass
             if done % 50 == 0:
                 log(f"  {done}/{len(domini)} completati, {len(siti)} con prezzo", "~")
-            if len(siti) >= max_siti:
-                pass
     
     if siti:
         siti.sort(key=lambda r: float(r["_prezzo"].replace("€","").replace(",",".")))
@@ -829,6 +883,28 @@ def main():
             risultati_report["shopping"] = prezzi_shopping
         else:
             log("  Nessun risultato o API key mancante", "-")
+
+    # 5. Freschezza indice: confronta prezzi indice locale vs Google Shopping
+    if args.usa_indice and prezzi_shopping and risultati_prezzi:
+        prezzi_indice = [r["prezzo_minimo"] for r in risultati_prezzi
+                         if any(s["url"] == r["url"] for s in siti_da_analizzare if s["tipo"] == "indice")]
+        if prezzi_indice and len(prezzi_shopping) >= 2:
+            media_shopping = sum(float(p.get("prezzo", 0)) for p in prezzi_shopping[:3] if p.get("prezzo")) / max(len([p for p in prezzi_shopping[:3] if p.get("prezzo")]), 1)
+            if media_shopping > 0:
+                min_indice = min(prezzi_indice)
+                diff = abs(min_indice - media_shopping) / media_shopping * 100
+                soglia = 15.0
+                if diff > soglia:
+                    log(f"  Freschezza: prezzo indice (€{min_indice:.2f}) vs shopping (€{media_shopping:.2f}) diverge del {diff:.0f}% > {soglia:.0f}%", "~")
+                    # Marca domini indice per refresh prioritario
+                    domini_divergenti = set()
+                    for r in risultati_prezzi:
+                        if any(s["url"] == r["url"] for s in siti_da_analizzare if s["tipo"] == "indice"):
+                            domini_divergenti.add(r["dominio"] if "dominio" in r else estrai_dominio(r["url"]))
+                    for dom in domini_divergenti:
+                        log(f"           → {dom} marcato per refresh prioritario", "~")
+                else:
+                    log(f"  Freschezza OK: prezzo indice (€{min_indice:.2f}) allineato a shopping (€{media_shopping:.2f}) (diff {diff:.0f}%)", "+")
 
     # ─── OUTPUT A SCHERMO ───
     print(f"\n{'═'*55}")
