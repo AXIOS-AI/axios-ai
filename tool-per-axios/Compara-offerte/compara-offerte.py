@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Compara-offerte v3.0 — Confronto prezzi farmaci
+Compara-offerte v3.2.0 — Confronto prezzi farmaci
 ================================================
 Cerca il miglior prezzo per un farmaco:
 1. Siti farmacie da Farmascopri (verifica siti up/down)
@@ -14,6 +14,7 @@ Usage:
   python3 compara-offerte.py "Brufen 600" --report
   python3 compara-offerte.py --solo-web "Oki task"
   python3 compara-offerte.py --aggiorna-siti
+  python3 compara-offerte.py "Eukerat emolliente" --usa-indice
 
 Dipendenze: pip install requests beautifulsoup4 lxml duckduckgo_search
 """
@@ -48,7 +49,7 @@ import warnings as _warnings
 _warnings.filterwarnings("ignore", category=Warning)
 logging.captureWarnings(True)
 
-VERSION = "3.1.0"
+VERSION = "3.2.0"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 FARMACOPRI_DATA = os.path.join(
@@ -476,7 +477,7 @@ def _cerca_dominio_wrapper(args):
     return None
 
 
-def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
+def cerca_siti_web(farmaco, max_siti=20, codice_aic=None, skip_duckduckgo=False):
     """Cerca su domini siti.md via sitemap + fallback form search + DuckDuckGo."""
     slug = re.sub(r'[^a-z0-9]+', '-', farmaco.lower()).strip("-")
     parole = farmaco.lower().split()[:3]
@@ -514,8 +515,8 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None):
         siti.sort(key=lambda r: float(r["_prezzo"].replace("€","").replace(",",".")))
     log(f"  {len(domini)} domini, {len(siti)} con prezzo trovato", "+")
     
-    # DuckDuckGo fallback
-    if len(siti) < max_siti:
+    # DuckDuckGo fallback (solo se richiesto)
+    if not skip_duckduckgo and len(siti) < max_siti:
         from duckduckgo_search import DDGS
         url_visti = {s["_dom"] for s in siti}
         log(f"  DuckDuckGo fallback...", "~")
@@ -768,30 +769,7 @@ def main():
     siti_da_analizzare = []
     domini_visti = set()
 
-    # 1. Farmacie da Farmascopri
-    if not args.solo_web:
-        farmacie = carica_farmacie()
-        # Filtra per città se specificato
-        if args.citta and farmacie:
-            citta_filtro = args.citta.lower()
-            filt = [f for f in farmacie if f.get("comune", "").lower() == citta_filtro]
-            log(f"Filtrate {len(filt)}/{len(farmacie)} farmacie per '{args.citta}'", "~")
-            farmacie = filt
-        if farmacie:
-            up, down = verifica_siti(farmacie)
-            if up:
-                log(f"Aggiungo {len(up)} siti farmacie...", "+")
-                for f in up:
-                    dom = estrai_dominio(f["sito"])
-                    if dom not in domini_visti:
-                        domini_visti.add(dom)
-                        siti_da_analizzare.append({
-                            "url": f["sito"],
-                            "nome": f["nome"],
-                            "tipo": "farmacia",
-                        })
-
-    # 2a. Ricerca locale indice (se --usa-indice)
+    # 1. INDICE LOCALE (FTS5) — se --usa-indice, è l'unica fonte
     if args.usa_indice:
         import sqlite3
         db_path = args.usa_indice if args.usa_indice != "indice_prezzi.db" else \
@@ -800,7 +778,6 @@ def main():
             log(f"Cerca nell'indice locale: {db_path}...", "*")
             try:
                 conn = sqlite3.connect(db_path)
-                # Cerca per prima parola del nome (FTS5 match parola singola)
                 prima_parola = farmaco.lower().split()[0] if farmaco.split() else farmaco.lower()
                 query_parts = [prima_parola]
                 if args.aic:
@@ -824,22 +801,48 @@ def main():
                 conn.close()
                 trovati = len([s for s in siti_da_analizzare if s['tipo'] == 'indice'])
                 log(f"Trovati {trovati} siti nell'indice", "+" if trovati else "~")
+                if not trovati:
+                    log(f"Nessun match nell'indice per '{farmaco}'", "-")
             except Exception as ex:
                 log(f"Errore query indice: {ex}", "-")
         else:
-            log(f"Indice non trovato: {db_path}. Lancia crawler-indice.py prima.", "!")
+            log(f"Indice non trovato: {db_path}", "!")
 
-    # 2b. Ricerca web (finder-siti integrato)
-    siti_web = cerca_siti_web(farmaco, args.max_siti, codice_aic=args.aic)
-    for s in siti_web:
-        dom = estrai_dominio(s["url"])
-        if dom not in domini_visti:
-            domini_visti.add(dom)
-            siti_da_analizzare.append({
-                "url": s["url"],
-                "nome": s.get("titolo", dom)[:60],
-                "tipo": "web",
-            })
+    # 2. Farmacie da Farmascopri (solo se --usa-indice non ha trovato risultati)
+    if not args.solo_web and (not args.usa_indice or not siti_da_analizzare):
+        farmacie = carica_farmacie()
+        if args.citta and farmacie:
+            citta_filtro = args.citta.lower()
+            filt = [f for f in farmacie if f.get("comune", "").lower() == citta_filtro]
+            log(f"Filtrate {len(filt)}/{len(farmacie)} farmacie per '{args.citta}'", "~")
+            farmacie = filt
+        if farmacie:
+            up, down = verifica_siti(farmacie)
+            if up:
+                log(f"Aggiungo {len(up)} siti farmacie...", "+")
+                for f in up:
+                    dom = estrai_dominio(f["sito"])
+                    if dom not in domini_visti:
+                        domini_visti.add(dom)
+                        siti_da_analizzare.append({
+                            "url": f["sito"],
+                            "nome": f["nome"],
+                            "tipo": "farmacia",
+                        })
+
+    # 3. Ricerca web (solo se nessuna delle fonti sopra ha risultati)
+    if not siti_da_analizzare:
+        siti_web = cerca_siti_web(farmaco, args.max_siti, codice_aic=args.aic,
+                                  skip_duckduckgo=True)
+        for s in siti_web:
+            dom = estrai_dominio(s["url"])
+            if dom not in domini_visti:
+                domini_visti.add(dom)
+                siti_da_analizzare.append({
+                    "url": s["url"],
+                    "nome": s.get("titolo", dom)[:60],
+                    "tipo": "web",
+                })
 
     if not siti_da_analizzare:
         log("Nessun sito da analizzare!", "!")

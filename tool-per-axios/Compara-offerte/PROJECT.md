@@ -11,6 +11,7 @@ Confronto prezzi farmacie con 3 motori di ricerca in cascata:
 ✅ 1,091,724 URL indicizzati (da 791K, +300K)
 ✅ 50 domini con sitemap crawlati su 192 totali
 ✅ Scopri-farmacie.py: discovery domini via SearchAPI.io
+✅ v3.2.0: --usa-indice ottimizzato — salta Farmascopri + DuckDuckGo se indice ha match
 
 ## Scoperta nuovi domini
 `scopri-farmacie.py` usa Google Shopping API per trovare farmacie non in siti.md:
