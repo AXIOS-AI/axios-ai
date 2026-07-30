@@ -1,20 +1,20 @@
 #!/usr/bin/env python3
 """
-Compara-offerte v3.2.0 — Confronto prezzi farmaci
+Compara-offerte v3.3.0 — Confronto prezzi farmaci
 ================================================
 Cerca il miglior prezzo per un farmaco:
-1. Siti farmacie da Farmascopri (verifica siti up/down)
-2. Ricerca web (DuckDuckGo) per altri siti con prezzi
-3. Google Shopping (SearchAPI.io) per confronto online
-4. Scraping pagine per trovare il prezzo specifico
-5. Output a schermo, report HTML solo se richiesto
+1. Indice FTS5 locale (0s) — 1.09M URL da 50 domini
+2. Pattern URL su 192 domini (16 workers, 8 pattern) — ~20s
+3. Scraping pagine per estrarre prezzo (30 workers) — ~10s
+4. Google Shopping (se API disponibile)
 
 Usage:
   python3 compara-offerte.py "Tachipirina 1000"
   python3 compara-offerte.py "Brufen 600" --report
+  python3 compara-offerte.py "Eukerat emolliente"
+  python3 compara-offerte.py "Prostamol 60" --aic 971549015
   python3 compara-offerte.py --solo-web "Oki task"
   python3 compara-offerte.py --aggiorna-siti
-  python3 compara-offerte.py "Eukerat emolliente" --usa-indice
 
 Dipendenze: pip install requests beautifulsoup4 lxml duckduckgo_search
 """
@@ -49,7 +49,7 @@ import warnings as _warnings
 _warnings.filterwarnings("ignore", category=Warning)
 logging.captureWarnings(True)
 
-VERSION = "3.2.0"
+VERSION = "3.3.0"
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
 
 FARMACOPRI_DATA = os.path.join(
@@ -196,27 +196,16 @@ SEARCH_PATTERNS = [
     # Magento
     "/catalogsearch/result/?q={slug}",
     # WordPress / WooCommerce
-    "/?s={slug}",
     "/?s={slug}&post_type=product",
     # PrestaShop
     "/search?controller=search&s={slug}",
     # Generici
     "/search?q={slug}",
-    "/cerca?q={slug}",
     "/ricerca?q={slug}",
     "/cerca/{slug}",
-    "/search/{slug}",
-    "/ricerca/{slug}",
-    # Pharma / cataloghi
+    # Pharma
     "/catalogo?search={slug}",
     "/prodotti?search={slug}",
-    "/prodotti?cerca={slug}",
-    "/farmaci?search={slug}",
-    "/farmaci?nome={slug}",
-    "/offerte?search={slug}",
-    # Generic e-commerce
-    "/index.php?route=product/search&search={slug}",
-    "/category/search?q={slug}",
 ]
 
 
@@ -389,31 +378,12 @@ def _estrai_prezzo_da_pagina(url, parole, aic):
 
 
 def _cerca_dominio_wrapper(args):
-    """Cerca prodotto su dominio via sitemap.xml + AIC/slug."""
+    """Cerca prodotto su dominio via pattern URL + sitemap. Skip form fallback (troppo lento)."""
     dom, slug, parole, aic = args
     dom_clean = dom.replace("www.", "").strip()
-    
     base = f"https://{dom_clean}"
     
-    # 1) Prova sitemap — cerca per prima parola (es. "miflor" matcha "miflor-10bust")
-    target = parole[0] if parole else (aic or slug).lower()
-    # Se anche AIC, include
-    targets = [target]
-    if aic:
-        targets.append(aic.lower())
-    if slug and slug != target:
-        targets.append(slug)
-    for sm_path in ["/sitemap.xml", "/sitemap_index.xml"]:
-        sm_url = base + sm_path
-        matched = _scarica_e_cerca_in_sitemap(sm_url, targets)
-        if matched:
-            for prod_url in matched[:3]:
-                ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
-                if ris:
-                    return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
-                            "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
-    
-    # 2) Prova SEARCH_PATTERNS in PARALLELO (18 pattern, ~1.5s totali invece di 27s)
+    # 1) Prova SEARCH_PATTERNS in PARALLELO (8 pattern, 1.5s timeout)
     from concurrent.futures import ThreadPoolExecutor as _TPE, as_completed as _AC
     def _prova_pattern(pat):
         pu = base + pat.replace("{slug}", slug)
@@ -433,46 +403,14 @@ def _cerca_dominio_wrapper(args):
         except:
             pass
         return None
-    with _TPE(max_workers=min(18, len(SEARCH_PATTERNS))) as _ppool:
+    with _TPE(max_workers=min(8, len(SEARCH_PATTERNS))) as _ppool:
         _futs = {_ppool.submit(_prova_pattern, p): p for p in SEARCH_PATTERNS}
         for _f in _AC(_futs):
             _ris = _f.result()
             if _ris:
                 pat_found, prod_url, ris_prezzo = _ris
-                log(f"    {dom}: trovato via pattern {pat_found}", "~")
                 return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
                         "_prezzo": f"€{ris_prezzo['prezzo']:.2f}", "_dom": dom}
-    
-    # 3) Fallback: homepage + form search (ultima spiaggia prima di DuckDuckGo)
-    try:
-        rh = requests.get(base, headers={"User-Agent": USER_AGENT},
-                          timeout=3, verify=False)
-        if rh.status_code < 400 and len(rh.text) > 500:
-            soup = BeautifulSoup(rh.text[:100000], "lxml")
-            for form in soup.find_all("form", action=True)[:3]:
-                action = form["action"]
-                search_base = action if action.startswith("http") else base.rstrip("/") + "/" + action.lstrip("/")
-                for param in ["s", "q", "search", "query", "cerca"]:
-                    sep = "&" if "?" in search_base else "?"
-                    su = f"{search_base}{sep}{param}={slug}"
-                    try:
-                        rs = requests.get(su, headers={"User-Agent": USER_AGENT},
-                                          timeout=3, verify=False)
-                        if rs.status_code < 400 and len(rs.text) > 500:
-                            soup2 = BeautifulSoup(rs.text[:150000], "lxml")
-                            for a_tag in soup2.find_all("a", href=True):
-                                atxt = a_tag.get_text(strip=True).lower()
-                                if any(p in atxt for p in parole):
-                                    ah = a_tag["href"]
-                                    prod_url = ah if ah.startswith("http") else base.rstrip("/") + "/" + ah.lstrip("/")
-                                    ris = _estrai_prezzo_da_pagina(prod_url, parole, aic)
-                                    if ris:
-                                        return {"url": prod_url, "titolo": dom, "fonte": "siti.md",
-                                                "_prezzo": f"€{ris['prezzo']:.2f}", "_dom": dom}
-                    except:
-                        pass
-    except:
-        pass
     
     return None
 
@@ -488,7 +426,7 @@ def cerca_siti_web(farmaco, max_siti=20, codice_aic=None, skip_duckduckgo=False)
     log(f"\nScansione {len(domini)} domini via sitemap...", "*")
     
     from concurrent.futures import ThreadPoolExecutor, as_completed
-    n_w = min(8, len(domini))  # 8 workers per banda (prima 15, troppo)
+    n_w = min(16, len(domini))  # 16 workers per velocità
     
     siti = []
     with ThreadPoolExecutor(max_workers=n_w) as pool:
@@ -769,47 +707,54 @@ def main():
     siti_da_analizzare = []
     domini_visti = set()
 
-    # 1. INDICE LOCALE (FTS5) — se --usa-indice, è l'unica fonte
-    if args.usa_indice:
+    # 1. INDICE LOCALE (FTS5) — SEMPRE per primo (istantaneo)
+    if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)), "indice_prezzi.db")):
         import sqlite3
-        db_path = args.usa_indice if args.usa_indice != "indice_prezzi.db" else \
-            os.path.join(os.path.dirname(os.path.abspath(__file__)), args.usa_indice)
-        if os.path.exists(db_path):
-            log(f"Cerca nell'indice locale: {db_path}...", "*")
-            try:
-                conn = sqlite3.connect(db_path)
-                prima_parola = farmaco.lower().split()[0] if farmaco.split() else farmaco.lower()
-                query_parts = [prima_parola]
-                if args.aic:
-                    query_parts.append(f'aic:{args.aic}')
-                query = ' OR '.join(query_parts)
-                cursor = conn.execute(
-                    "SELECT dominio, url_prodotto, slug, aic, nome_estratto "
-                    "FROM indice WHERE indice MATCH ? ORDER BY rowid LIMIT ?",
-                    (query, args.max_siti * 2)
-                )
-                for row in cursor:
-                    dom, url, slug_val, aic_val, nome = row
-                    if dom not in domini_visti:
-                        domini_visti.add(dom)
-                        siti_da_analizzare.append({
-                            "url": url,
-                            "nome": nome or slug_val or dom,
-                            "tipo": "indice",
-                        })
-                        log(f"  + {nome or slug_val}: {url}", "~")
-                conn.close()
-                trovati = len([s for s in siti_da_analizzare if s['tipo'] == 'indice'])
-                log(f"Trovati {trovati} siti nell'indice", "+" if trovati else "~")
-                if not trovati:
-                    log(f"Nessun match nell'indice per '{farmaco}'", "-")
-            except Exception as ex:
-                log(f"Errore query indice: {ex}", "-")
-        else:
-            log(f"Indice non trovato: {db_path}", "!")
+        db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "indice_prezzi.db")
+        log(f"Cerca nell'indice locale...", "*")
+        try:
+            conn = sqlite3.connect(db_path)
+            prima_parola = farmaco.lower().split()[0] if farmaco.split() else farmaco.lower()
+            query_parts = [prima_parola]
+            if args.aic:
+                query_parts.append(f'aic:{args.aic}')
+            query = ' OR '.join(query_parts)
+            cursor = conn.execute(
+                "SELECT dominio, url_prodotto, slug, aic, nome_estratto "
+                "FROM indice WHERE indice MATCH ? ORDER BY rowid LIMIT ?",
+                (query, args.max_siti * 2)
+            )
+            for row in cursor:
+                dom, url, slug_val, aic_val, nome = row
+                if dom not in domini_visti:
+                    domini_visti.add(dom)
+                    siti_da_analizzare.append({
+                        "url": url,
+                        "nome": nome or slug_val or dom,
+                        "tipo": "indice",
+                    })
+            conn.close()
+            trovati = len([s for s in siti_da_analizzare if s['tipo'] == 'indice'])
+            log(f"Indice: {trovati} match", "+" if trovati else "~")
+        except Exception as ex:
+            log(f"Errore query indice: {ex}", "-")
 
-    # 2. Farmacie da Farmascopri (solo se --usa-indice non ha trovato risultati)
-    if not args.solo_web and (not args.usa_indice or not siti_da_analizzare):
+    # 2. Pattern URL sui 192 domini (sempre, per massima copertura)
+    log(f"Scan pattern su tutti i domini...", "*")
+    siti_web = cerca_siti_web(farmaco, args.max_siti, codice_aic=args.aic,
+                              skip_duckduckgo=True)
+    for s in siti_web:
+        dom = estrai_dominio(s["url"])
+        if dom not in domini_visti:
+            domini_visti.add(dom)
+            siti_da_analizzare.append({
+                "url": s["url"],
+                "nome": s.get("titolo", dom)[:60],
+                "tipo": "web",
+            })
+
+    # 3. Farmacie da Farmascopri (solo per ricerca locale)
+    if not args.solo_web:
         farmacie = carica_farmacie()
         if args.citta and farmacie:
             citta_filtro = args.citta.lower()
@@ -829,20 +774,6 @@ def main():
                             "nome": f["nome"],
                             "tipo": "farmacia",
                         })
-
-    # 3. Ricerca web (solo se nessuna delle fonti sopra ha risultati)
-    if not siti_da_analizzare:
-        siti_web = cerca_siti_web(farmaco, args.max_siti, codice_aic=args.aic,
-                                  skip_duckduckgo=True)
-        for s in siti_web:
-            dom = estrai_dominio(s["url"])
-            if dom not in domini_visti:
-                domini_visti.add(dom)
-                siti_da_analizzare.append({
-                    "url": s["url"],
-                    "nome": s.get("titolo", dom)[:60],
-                    "tipo": "web",
-                })
 
     if not siti_da_analizzare:
         log("Nessun sito da analizzare!", "!")

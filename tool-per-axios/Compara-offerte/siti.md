@@ -1,6 +1,6 @@
 # Farmacie online italiane — Domini per ricerca prezzi
 # Generato da: siti.md + siti .md (consolidato)
-# Totale: 192 domini
+# Totale: 194 domini
 
 ## Farmacie e Parafarmacie
 
@@ -194,6 +194,8 @@
 - https://www.personalpharma.it
 - https://www.pharmagoli.com
 - https://www.risparmiainfarmacia.it
+- https://www.farmaciedelsorriso.it
+- https://farmamia.net
 
 ## Marketplace
 
