@@ -24,7 +24,8 @@ WEBFINDER_DIR = os.path.join(BASE_DIR, 'tools', 'farmacia-web-finder')
 
 # === STEP 1: FB CHECK via ofacebook prefix library ===
 def step1_facebook(nome, citta, fb_known=''):
-    """Verifica link FB noto + genera URL variants via ofacebook prefix"""
+    import os, subprocess, requests, re
+    from urllib.parse import unquote
     result = {
         "farmacia": nome,
         "citta": citta,
@@ -33,61 +34,99 @@ def step1_facebook(nome, citta, fb_known=''):
         "fb_working": False,
         "fb_variants": [],
         "fb_info": {},
+        "fb_ddg_search": None,
     }
 
-    # Verifica FB noto
-    if fb_known:
+    def test_url(url):
         try:
-            import requests
-            r = requests.get(fb_known, headers={
+            r = requests.get(url, headers={
                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
-            }, timeout=10, allow_redirects=True)
-            
-            result['fb_status'] = r.status_code
-            result['fb_working'] = r.status_code == 200
-            result['fb_final_url'] = r.url
-            
+            }, timeout=8, allow_redirects=True)
             if r.status_code == 200:
-                # Estrai info base
-                import re
                 html = r.text[:5000]
                 m = re.search(r'<title>(.*?)</title>', html, re.DOTALL)
-                if m: result['fb_info']['title'] = m.group(1).strip()[:100]
-                m = re.search(r'"pageID"\s*:\s*"(\d+)"', html)
-                if m: result['fb_info']['page_id'] = m.group(1)
-        except Exception as e:
-            result['fb_status'] = f"ERR: {str(e)[:60]}"
+                title = m.group(1).strip()[:100] if m else ''
+                pid = re.search(r'"pageID"\s*:\s*"(\d+)"', html)
+                return True, r.url, title, pid.group(1) if pid else ''
+            return False, r.url, '', ''
+        except:
+            return False, '', '', ''
 
-    # Genera URL variants via ofacebook prefix library (se disponibile)
+    # LIVELLO 1: Verifica link FB noto
+    if fb_known:
+        ok, final, title, pid = test_url(fb_known)
+        result['fb_status'] = 200 if ok else 'ERR'
+        result['fb_working'] = ok
+        result['fb_final_url'] = final
+        if ok:
+            result['fb_info']['title'] = title
+            if pid: result['fb_info']['page_id'] = pid
+        return result  # Gia conosciamo il FB, non serve cercare altro
+
+    # LIVELLO 2: Genera varianti via ofacebook (solo registrate, non testate — troppo lento)
+    import subprocess
     prefix_path = os.path.join(OFACEBOOK_DIR, 'src', 'prefix-library.js')
     if os.path.exists(prefix_path):
-        # Usa Node per eseguire la prefix library e generare variants
-        import subprocess, tempfile
-        script = f"""
-        import {{ buildUrl, THUMPERSECURE_PREFIXES, METHOD_COMBINATIONS }} from '{prefix_path}';
-        
-        const nome = '{nome.lower().replace("'", "").replace(" ", "")}';
-        const username = nome.replace(/[^a-z0-9]/g, '').replace(/^farmacia/, '');
-        
-        // Profile discovery prefixes
-        const searchPrefixes = ['mbasic', 'm', 'touch', 'www', 'mobile', 'lite'];
-        for (const p of searchPrefixes) {{
-            const url = buildUrl(p.includes('.') ? p : p + '.facebook.com', '/' + username);
-            console.log(url);
+        safe_nome = nome.lower().replace("'", "").replace(" ", "")
+        username = re.sub(r'[^a-z0-9]', '', safe_nome).replace('farmacia', '') or safe_nome
+        username_farm = 'farmacia' + username
+        script = f'''
+        import {{ buildUrl }} from '{prefix_path}';
+        const usernames = ['{username}', '{username_farm}'];
+        const prefixes = ['mbasic', 'm', 'touch', 'www', 'mobile', 'lite'];
+        for (const u of usernames) {{
+            for (const p of prefixes) {{
+                console.log(buildUrl(p + '.facebook.com', '/' + u));
+            }}
         }}
-        // Try with farmacia prefix
-        const username2 = 'farmacia' + nome.replace(/[^a-z0-9]/g, '');
-        for (const p of searchPrefixes) {{
-            const url = buildUrl(p.includes('.') ? p : p + '.facebook.com', '/' + username2);
-            console.log(url);
-        }}
-        """
+        '''
         try:
-            r = subprocess.run(['node', '-e', script], capture_output=True, text=True, timeout=10)
+            r = subprocess.run(['node', '-e', script], capture_output=True, text=True, timeout=5)
             if r.stdout:
                 result['fb_variants'] = [u.strip() for u in r.stdout.strip().split('\n') if u.strip()]
         except:
             pass
+
+    # LIVELLO 3: Cerca via DuckDuckGo — query senza site:, filtra FB dopo
+    try:
+        import os
+        q = f'"{nome}" {"citta" if citta else ""} Facebook'
+        r = requests.get(
+            'https://html.duckduckgo.com/html/',
+            params={{'q': q}},
+            headers={{'User-Agent': 'Mozilla/5.0'}},
+            timeout=8
+        )
+        if r.status_code == 200:
+            from urllib.parse import unquote
+            fb_urls = []
+            for m in re.finditer(r'uddg=([^&\s]+)', r.text):
+                decoded = unquote(m.group(1))
+                if 'facebook.com' in decoded.lower():
+                    fb_urls.append(decoded.split('&')[0])
+            fb_urls = list(dict.fromkeys(fb_urls))
+            result['fb_ddg_search'] = {{'query': q, 'found_urls': fb_urls[:5]}}
+
+            for url in fb_urls[:5]:
+                try:
+                    gr = requests.get(url, headers={{
+                        'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36',
+                    }}, timeout=5, allow_redirects=True)
+                    if gr.status_code == 200:
+                        html = gr.text[:5000]
+                        m = re.search(r'<title>(.*?)</title>', html, re.DOTALL)
+                        title = m.group(1).strip()[:100] if m else ''
+                        pid = re.search(r'"pageID"\\s*:\\s*"(\\d+)"', html)
+                        result['fb_working'] = True
+                        result['fb_status'] = 200
+                        result['fb_final_url'] = gr.url
+                        result['fb_info']['title'] = title
+                        if pid: result['fb_info']['page_id'] = pid.group(1)
+                        break
+                except:
+                    pass
+    except:
+        pass
 
     return result
 
@@ -316,6 +355,7 @@ def main():
     parser.add_argument("--output", "-o", default="./output_pipeline", help="Directory output")
     parser.add_argument("--skip-fb", action="store_true", help="Salta step FB")
     parser.add_argument("--skip-ig", action="store_true", help="Salta step IG")
+    parser.add_argument("--skip-web", action="store_true", help="Salta Web Finder + HexStrike")
     args = parser.parse_args()
     
     # Carica lista farmacie
@@ -343,7 +383,7 @@ def main():
     print(f"\n{'='*60}")
     print(f"  🏥 FARMASCOPRI v1.0 — Multi-Platform Pharmacy OSINT")
     print(f"  Farmacie: {len(farmacie)}")
-    print(f"  FB: {'⏭' if args.skip_fb else '✅'} | IG: {'⏭' if args.skip_ig else '✅'} | Web: ✅")
+    print(f"  FB: {'⏭' if args.skip_fb else '✅'} | IG: {'⏭' if args.skip_ig else '✅'} | Web: {'⏭' if args.skip_web else '✅'}")
     print(f"{'='*60}")
     
     all_results = []
@@ -404,25 +444,27 @@ def main():
             result['step2b'] = {"ig_username": ig_username, "ig_status": "SKIPPED", "ig_working": False}
         
         # Step 3: Web Finder
-        print(f"  🌐 Web...", end=' ', flush=True)
-        s3 = step3_web_finder(nome, citta, sito_known)
-        result['step3'] = s3
-        if s3['found']:
-            print(f"✅ {s3['best_url']}")
-        else:
-            print("❌", end='')
-            # Step 4 (Fallback): HexStrike — solo se web finder fallisce
-            print(f" ⚡FX...", end=' ', flush=True)
-            s4 = step4_hexstrike(nome, citta, sito_known)
-            result['step4'] = s4
-            if s4['found']:
-                print(f"✅ {s4['best_url']}")
-                # Copia in step3 per report unificato
-                s3['found'] = True
-                s3['best_url'] = s4['best_url']
-                s3['hexstrike_fallback'] = True
+        if not args.skip_web:
+            print(f"  🌐 Web...", end=' ', flush=True)
+            s3 = step3_web_finder(nome, citta, sito_known)
+            result['step3'] = s3
+            if s3['found']:
+                print(f"✅ {s3['best_url']}")
             else:
-                print("❌")
+                print("❌", end='')
+                # Step 4 (Fallback): HexStrike — solo se web finder fallisce
+                print(f" ⚡FX...", end=' ', flush=True)
+                s4 = step4_hexstrike(nome, citta, sito_known)
+                result['step4'] = s4
+                if s4['found']:
+                    print(f"✅ {s4['best_url']}")
+                    s3['found'] = True
+                    s3['best_url'] = s4['best_url']
+                    s3['hexstrike_fallback'] = True
+                else:
+                    print("❌")
+        else:
+            result['step3'] = {"found": False, "best_url": ""}
         
         all_results.append(result)
         
