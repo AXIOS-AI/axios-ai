@@ -1,255 +1,244 @@
 #!/usr/bin/env python3
 """
-discovery-endpoint-spa.py
-
-Scopre l'endpoint JSON interno usato dalle pagine di ricerca delle farmacie
-online costruite come SPA (React/Vue/Angular), dove l'HTML statico non
-contiene i link prodotto e il crawler sitemap classico non basta.
+discovery-endpoint-spa.py — Scopre endpoint JSON per SPA farmacia
+================================================================
+Usa pyppeteer (async) per aprire pagina ricerca, intercettare XHR/fetch
+JSON, e salvare pattern endpoint in SQLite.
 
 Approccio:
-  1. Apre la pagina di ricerca del dominio con un browser headless (Playwright)
-  2. Intercetta tutte le risposte di rete (XHR/fetch) durante il caricamento
-  3. Individua, con un'euristica su URL/content-type, quale risposta è
-     l'endpoint di ricerca prodotti
-  4. Salva il pattern trovato in indice_endpoint.db, cosi' le query successive
-     per quel dominio possono chiamare l'endpoint direttamente con requests/httpx,
-     SENZA piu' bisogno del browser
+  1. Apre pagina di ricerca del dominio con pyppeteer headless
+  2. Intercetta risposte di rete (XHR/fetch) durante caricamento
+  3. Individua endpoint JSON risposta con keyword hints
+  4. Salva pattern in indice_endpoint.db
+  5. Query live successive chiamano endpoint direttamente con httpx
 
-Uso tipico (una tantum o mensile, NON per ogni query live):
-    python3 discovery-endpoint-spa.py --domini domini_spa.txt --workers 3
+Uso:
+  python3 discovery-endpoint-spa.py --domini lista.txt          # Discovery batch
+  python3 discovery-endpoint-spa.py --dominio farmaciaXY.it     # Singolo
+  python3 discovery-endpoint-spa.py --query "tachipirina" --dominio farmaciaXY.it  # Interroga
 
-Poi, per interrogare un dominio gia' scoperto:
-    python3 discovery-endpoint-spa.py --query "tachipirina" --dominio farmaciaXY.it
-
-Note:
-- Va eseguito a bassa concorrenza (2-4 worker): un browser headless pesa
-  molto di piu' di una singola richiesta HTTP.
-- Richiede: pip install playwright httpx && playwright install chromium
+Concorrenza: asyncio.Semaphore(2-3) — browser headless pesa.
 """
 
 import argparse
+import asyncio
 import json
 import re
 import sqlite3
 import sys
 import time
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-from urllib.parse import urlparse
 
 DB_PATH = Path(__file__).parent / "indice_endpoint.db"
-QUERY_TEST_DEFAULT = "tachipirina"
+QTEST = "tachipirina"
 
-KEYWORD_HINTS = [
-    "search", "cerca", "ricerca", "product", "prodott",
-    "catalog", "catalogsearch", "api/search", "query",
+# Keywords che suggeriscono endpoint di ricerca prodotto
+KW = ["search", "cerca", "ricerca", "product", "prodott",
+      "catalog", "catalogsearch", "api/search", "query", "filter",
+      "suggest", "json"]
+
+# Pagine di ricerca da provare per triggerare XHR
+SEARCH = [
+    "/cerca?q={q}", "/search?q={q}", "/ricerca?q={q}",
+    "/catalogsearch/result/?q={q}", "/search/{q}", "/?s={q}",
+    "/search/suggest.json?q={q}",    # Shopify AJAX
+    "/api/search?q={q}",             # API generica
+    "/api/products/search?q={q}",
+    "/ajax/search?q={q}",            # PrestaShop
 ]
 
-SEARCH_PATH_TEMPLATES = [
-    "/cerca?q={q}",
-    "/search?q={q}",
-    "/ricerca?q={q}",
-    "/catalogsearch/result/?q={q}",
-    "/search/{q}",
-    "/?s={q}",
-]
 
-
-def init_db(db_path: Path = DB_PATH) -> sqlite3.Connection:
-    conn = sqlite3.connect(db_path)
-    conn.execute("""
+def conn_db():
+    c = sqlite3.connect(DB_PATH)
+    c.execute("""
         CREATE TABLE IF NOT EXISTS endpoint_discovery (
             dominio TEXT PRIMARY KEY,
-            endpoint_pattern TEXT,
-            metodo TEXT,
-            content_type TEXT,
-            trovato INTEGER,
-            data_verifica TEXT,
-            note TEXT
+            endpoint_pattern TEXT, metodo TEXT,
+            content_type TEXT, trovato INTEGER,
+            data_verifica TEXT, note TEXT
         )
     """)
-    conn.commit()
-    return conn
+    c.commit(); return c
 
 
-def gia_verificato(conn, dominio, giorni_validita=30):
-    row = conn.execute(
-        "SELECT endpoint_pattern, trovato, data_verifica FROM endpoint_discovery WHERE dominio = ?",
-        (dominio,),
+def salva(dominio, ep, metodo, ctype, trovato, note=""):
+    c = conn_db()
+    c.execute("""
+        INSERT OR REPLACE INTO endpoint_discovery
+        VALUES (?,?,?,?,?,?,?)
+    """, (dominio, ep or "", metodo or "", ctype or "",
+          int(trovato), str(time.time()), note or ""))
+    c.commit(); c.close()
+
+
+def gia_verificato(dominio, giorni=30):
+    c = conn_db()
+    r = c.execute(
+        "SELECT endpoint_pattern, trovato, data_verifica FROM endpoint_discovery WHERE dominio=?",
+        (dominio,)
     ).fetchone()
-    if not row:
-        return None
-    endpoint_pattern, trovato, data_verifica = row
-    eta_giorni = (time.time() - float(data_verifica)) / 86400 if data_verifica else 999
-    if eta_giorni > giorni_validita:
-        return None
-    return {"endpoint_pattern": endpoint_pattern, "trovato": bool(trovato)}
+    c.close()
+    if not r: return None
+    ep, trov, dv = r
+    eta = (time.time() - float(dv)) / 86400 if dv else 999
+    if eta > giorni: return None
+    return {"endpoint_pattern": ep, "trovato": bool(trov)}
 
 
-def salva_esito(conn, dominio, endpoint_pattern, metodo, content_type, trovato, note=""):
-    conn.execute("""
-        INSERT INTO endpoint_discovery (dominio, endpoint_pattern, metodo, content_type, trovato, data_verifica, note)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        ON CONFLICT(dominio) DO UPDATE SET
-            endpoint_pattern=excluded.endpoint_pattern,
-            metodo=excluded.metodo,
-            content_type=excluded.content_type,
-            trovato=excluded.trovato,
-            data_verifica=excluded.data_verifica,
-            note=excluded.note
-    """, (dominio, endpoint_pattern, metodo, content_type, int(trovato), str(time.time()), note))
-    conn.commit()
+async def scopri(dominio, query=QTEST, timeout_ms=10000):
+    """
+    Apre dominio con pyppeteer, carica pagina ricerca, cattura endpoint JSON.
+    """
+    from pyppeteer import launch
 
-
-def scopri_endpoint(dominio, query_test=QUERY_TEST_DEFAULT, timeout_ms=8000):
-    try:
-        from playwright.sync_api import sync_playwright
-    except ImportError:
-        print("Playwright non installato. pip install playwright && playwright install chromium")
-        sys.exit(1)
-
-    risultato = {"trovato": False, "endpoint_pattern": None, "metodo": None, "content_type": None, "note": ""}
     candidati = []
 
-    def on_response(response):
+    # Domini terze parti da escludere (tracking/telemetry/CDN)
+    EXCLUDE_DOM = {"shopifysvc.com", "shop.app", "google-analytics.com",
+                   "googletagmanager.com", "facebook.com", "doubleclick.net",
+                   "hotjar.com", "cookielaw.org", "optanon"}
+
+    async def on_response(res):
         try:
-            ctype = response.headers.get("content-type", "")
-            if "json" not in ctype:
+            ct = res.headers.get("content-type", "").lower()
+            if "json" not in ct:
                 return
-            url_lower = response.url.lower()
-            if any(k in url_lower for k in KEYWORD_HINTS):
+            url = res.url.lower()
+
+            # Escludi tracking/telemetry di terze parti
+            from urllib.parse import urlparse
+            dom = urlparse(url).netloc.replace("www.", "")
+            if any(x in dom for x in EXCLUDE_DOM):
+                return
+            # Preferisci endpoint sullo stesso dominio
+            if dom != dominio.lower() and not dom.endswith("." + dominio.lower()):
+                return
+
+            if any(k.replace("*","") in url for k in KW if k != "*"):
                 try:
-                    body = response.json()
+                    body = await res.json()
+                    has_body = body is not None
                 except:
-                    body = None
+                    has_body = False
                 candidati.append({
-                    "url": response.url,
-                    "metodo": response.request.method,
-                    "content_type": ctype,
-                    "ha_body_json": body is not None,
+                    "url": res.url, "method": res.request.method,
+                    "ctype": ct, "has_body": has_body,
                 })
         except:
             pass
 
-    with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.on("response", on_response)
+    browser = await launch(
+        headless=True,
+        args=["--no-sandbox", "--disable-setuid-sandbox",
+              "--disable-dev-shm-usage", "--single-process"],
+        handleSIGINT=False, handleSIGTERM=False, handleSIGHUP=False,
+    )
+    page = await browser.newPage()
+    page.on("response", lambda r: asyncio.ensure_future(on_response(r)))
 
-        for template in SEARCH_PATH_TEMPLATES:
-            url = f"https://{dominio}{template.format(q=query_test)}"
-            try:
-                page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
-                page.wait_for_timeout(2500)
-            except:
-                continue
-            if candidati:
-                break
+    for tmpl in SEARCH:
+        url = f"https://{dominio}{tmpl.format(q=query)}"
+        try:
+            resp = await page.goto(url, timeout=timeout_ms, waitUntil="domcontentloaded")
+            await asyncio.sleep(3)
+        except:
+            continue
+        if candidati:
+            break
 
-        browser.close()
+    await browser.close()
 
     if candidati:
-        scelto = next((c for c in candidati if c["ha_body_json"]), candidati[0])
-        pattern = re.sub(re.escape(query_test), "{q}", scelto["url"], flags=re.IGNORECASE)
-        risultato.update({
-            "trovato": True,
-            "endpoint_pattern": pattern,
-            "metodo": scelto["metodo"],
-            "content_type": scelto["content_type"],
-        })
-    else:
-        risultato["note"] = "nessun endpoint JSON con le euristiche correnti"
+        scelto = next((c for c in candidati if c["has_body"]), candidati[0])
+        pattern = re.sub(re.escape(query), "{q}", scelto["url"], flags=re.IGNORECASE)
+        return {"trovato": True, "endpoint_pattern": pattern,
+                "metodo": scelto["method"], "content_type": scelto["ctype"]}
 
-    return risultato
+    return {"trovato": False, "endpoint_pattern": None,
+            "metodo": None, "content_type": None,
+            "note": "nessun endpoint JSON con keyword hints"}
 
 
-def processa_dominio(dominio, conn, forza=False):
+async def processa(dominio, forza=False):
     if not forza:
-        esistente = gia_verificato(conn, dominio)
-        if esistente:
-            return dominio, {"skip": True, **esistente}
+        v = gia_verificato(dominio)
+        if v: return dominio, "skip", v.get("trovato")
 
-    esito = scopri_endpoint(dominio)
-    salva_esito(conn, dominio, esito["endpoint_pattern"], esito["metodo"],
-                esito["content_type"], esito["trovato"], esito["note"])
-    return dominio, esito
-
-
-def esegui_discovery_batch(domini, workers=3, forza=False):
-    conn = init_db()
-    trovati, non_trovati, skippati = 0, 0, 0
-
-    with ThreadPoolExecutor(max_workers=workers) as executor:
-        futures = {executor.submit(processa_dominio, dominio, init_db(), forza): dominio for dominio in domini}
-        for future in as_completed(futures):
-            dominio = futures[future]
-            try:
-                _, esito = future.result()
-            except Exception as e:
-                print(f"[ERRORE] {dominio}: {e}")
-                continue
-
-            if esito.get("skip"):
-                skippati += 1
-                print(f"[SKIP] {dominio}: {'trovato' if esito.get('trovato') else 'non trovato'}")
-            elif esito.get("trovato"):
-                trovati += 1
-                print(f"[OK]   {dominio}: {esito['endpoint_pattern']}")
-            else:
-                non_trovati += 1
-                print(f"[MISS] {dominio}: {esito.get('note', '')}")
-
-    print(f"\nRiepilogo: {trovati} trovati, {non_trovati} non trovati, {skippati} skippati")
+    esito = await scopri(dominio)
+    salva(dominio, esito["endpoint_pattern"], esito["metodo"],
+          esito["content_type"], esito["trovato"], esito.get("note", ""))
+    return dominio, "ok", esito["trovato"]
 
 
-def interroga_endpoint_scoperto(dominio, query):
+async def batch(domini, workers=3, forza=False):
+    sem = asyncio.Semaphore(workers)
+    trov, miss, skip = 0, 0, 0
+
+    async def limit(d):
+        async with sem:
+            return await processa(d, forza)
+
+    tasks = [limit(d) for d in domini]
+    for coro in asyncio.as_completed(tasks):
+        d, esito, ok = await coro
+        if esito == "skip":
+            skip += 1; print(f"[SKIP] {d} ({'ok' if ok else 'miss'})")
+        elif ok:
+            trov += 1; print(f"[OK]   {d}: endpoint trovato")
+        else:
+            miss += 1; print(f"[MISS] {d}")
+
+    print(f"\nBatch: {trov} ok, {miss} miss, {skip} skip")
+    return trov, miss, skip
+
+
+def interroga(dominio, query):
+    """Chiama endpoint scoperto direttamente con httpx."""
     import httpx
-
-    conn = init_db()
-    row = conn.execute(
-        "SELECT endpoint_pattern, metodo FROM endpoint_discovery WHERE dominio = ? AND trovato = 1",
-        (dominio,),
+    c = conn_db()
+    r = c.execute(
+        "SELECT endpoint_pattern, metodo FROM endpoint_discovery WHERE dominio=? AND trovato=1",
+        (dominio,)
     ).fetchone()
-    if not row:
-        print(f"Nessun endpoint scoperto per {dominio}")
+    c.close()
+    if not r:
+        print(f"Nessun endpoint per {dominio}. Esegui prima discovery.")
         return None
 
-    pattern, metodo = row
-    url = pattern.replace("{q}", query)
-
+    url = r[0].replace("{q}", query)
     try:
-        resp = httpx.get(url, timeout=6.0) if metodo == "GET" else httpx.post(url, timeout=6.0)
+        resp = httpx.get(url, timeout=8)
         resp.raise_for_status()
         return resp.json()
     except Exception as e:
-        print(f"Errore endpoint {dominio}: {e}")
+        print(f"ERR: {e}")
         return None
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Discovery endpoint JSON per farmacie online SPA")
-    parser.add_argument("--domini", type=str, help="File con un dominio per riga")
-    parser.add_argument("--workers", type=int, default=3)
-    parser.add_argument("--forza", action="store_true")
-    parser.add_argument("--query", type=str, help="Interroga endpoint scoperto con query")
-    parser.add_argument("--dominio", type=str, help="Dominio singolo")
-    args = parser.parse_args()
+    p = argparse.ArgumentParser()
+    p.add_argument("--domini", type=str, help="File con un dominio per riga")
+    p.add_argument("--workers", type=int, default=3, help="Browser paralleli (default 3)")
+    p.add_argument("--forza", action="store_true")
+    p.add_argument("--query", type=str, help="Interroga endpoint scoperto")
+    p.add_argument("--dominio", type=str, help="Dominio singolo per discovery o interrogaz.")
+    args = p.parse_args()
 
     if args.query and args.dominio:
-        risultato = interroga_endpoint_scoperto(args.dominio, args.query)
-        if risultato:
-            print(json.dumps(risultato, indent=2, ensure_ascii=False)[:2000])
+        r = interroga(args.dominio, args.query)
+        if r:
+            print(json.dumps(r, indent=2, ensure_ascii=False)[:2000])
         return
 
     if args.dominio and not args.domini:
         domini = [args.dominio]
     elif args.domini:
-        domini = [line.strip() for line in Path(args.domini).read_text().splitlines() if line.strip()]
+        domini = [l.strip() for l in Path(args.domini).read_text().splitlines() if l.strip()]
     else:
-        parser.error("Serve --domini (file), --dominio (singolo), o --query + --dominio")
-        return
+        p.error("Serve --domini (file), --dominio (singolo), o --query + --dominio")
 
-    esegui_discovery_batch(domini, workers=args.workers, forza=args.forza)
+    print(f"Endpoint discovery su {len(domini)} domini ({args.workers} workers)...")
+    asyncio.run(batch(domini, args.workers, args.forza))
 
 
 if __name__ == "__main__":
