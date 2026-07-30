@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-07-30T07:32:08.153797",
+  "farmaci_cercati": 226,
+  "farmaci_con_risultati": 40,
+  "errori": 10,
+  "domini_totale": 74,
+  "farmacie_nuove": [
+    {
+      "dominio": "farmainforma.net",
+      "farmaci": 8
+    },
+    {
+      "dominio": "personalpharma.it",
+      "farmaci": 1
+    },
+    {
+      "dominio": "risparmiainfarmacia.it",
+      "farmaci": 2
+    },
+    {
+      "dominio": "farma.it",
+      "farmaci": 17
+    },
+    {
+      "dominio": "farmadea.it",
+      "farmaci": 19
+    },
+    {
+      "dominio": "marconifarma.it",
+      "farmaci": 8
+    },
+    {
+      "dominio": "farmaio.it",
+      "farmaci": 2
+    },
+    {
+      "dominio": "farmacquista.it",
+      "farmaci": 1
+    },
+    {
+      "dominio": "farma-web.it",
+      "farmaci": 10
+    },
+    {
+      "dominio": "www.irisfarma.com",
+      "farmaci": 4
+    },
+    {
+      "dominio": "mifarma.it",
+      "farmaci": 1
+    },
+    {
+      "dominio": "alpropharmacy.com",
+      "farmaci": 1
+    },
+    {
+      "dominio": "parafarmacia-online.com",
+      "farmaci": 1
+    },
+    {
+      "dominio": "farmainsieme.com",
+      "farmaci": 1
+    },
+    {
+      "dominio": "farmaciahelvethia.it",
+      "farmaci": 1
+    },
+    {
+      "dominio": "pharmagoli.com",
+      "farmaci": 1
+    },
+    {
+      "dominio": "happyfarma.it",
+      "farmaci": 1
+    },
+    {
+      "dominio": "bonosalute.it",
+      "farmaci": 1
+    }
+  ],
+  "farmacie_esistenti": [
+    {
+      "dominio": "easyfarma.it",
+      "farmaci": 15
+    },
+    {
+      "dominio": "openfarma.it",
+      "farmaci": 19
+    },
+    {
+      "dominio": "semprefarmacia.it",
+      "farmaci": 16
+    },
+    {
+      "dominio": "farmaciauno.it",
+      "farmaci": 5
+    },
+    {
+      "dominio": "parafarmacia.it",
+      "farmaci": 2
+    }
+  ]
+}

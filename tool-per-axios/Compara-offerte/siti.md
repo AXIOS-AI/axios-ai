@@ -1,6 +1,6 @@
 # Farmacie online italiane — Domini per ricerca prezzi
 # Generato da: siti.md + siti .md (consolidato)
-# Totale: 170 domini
+# Totale: 192 domini
 
 ## Farmacie e Parafarmacie
 
@@ -173,7 +173,27 @@
 - https://www.vitalfarma.it
 - https://www.vivinfarma.it
 - https://www.volafarma.it
+- https://www.amicafarmacia.com
+- https://www.misterfarma.it
 - https://www.xfarma.it
+- https://www.alpropharmacy.com
+- https://www.bonosalute.it
+- https://www.farma.it
+- https://www.farma-web.it
+- https://www.farmaciahelvethia.it
+- https://www.farmacquista.it
+- https://www.farmadea.it
+- https://www.farmainforma.net
+- https://www.farmainsieme.com
+- https://www.farmaio.it
+- https://www.happyfarma.it
+- https://www.irisfarma.com
+- https://www.marconifarma.it
+- https://www.mifarma.it
+- https://www.parafarmacia-online.com
+- https://www.personalpharma.it
+- https://www.pharmagoli.com
+- https://www.risparmiainfarmacia.it
 
 ## Marketplace
 
