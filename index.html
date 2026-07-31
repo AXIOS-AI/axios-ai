@@ -81,49 +81,96 @@
 .splash-next:hover { opacity:1; }
 
 /* PILLOLE ANIMATE */
-@keyframes pill-red-enter {
-  0% { transform: translateX(-200%) scale(0.3); opacity: 0; }
-  60% { transform: translateX(5%) scale(1.1); opacity: 1; }
-  100% { transform: translateX(0) scale(1); opacity: 1; }
+@keyframes pill-cta-enter {
+  0% { opacity:0; transform:translateY(24px) scale(.5); }
+  60% { opacity:1; transform:translateY(-4px) scale(1.06); }
+  100% { opacity:1; transform:translateY(0) scale(1); }
 }
-@keyframes pill-blue-enter {
-  0% { transform: translateX(200%) scale(0.3); opacity: 0; }
-  60% { transform: translateX(-5%) scale(1.1); opacity: 1; }
-  100% { transform: translateX(0) scale(1); opacity: 1; }
+@keyframes hand-sway-left {
+  0%,100% { transform:translateY(0) rotate(-10deg); }
+  50% { transform:translateY(-12px) rotate(-4deg); }
 }
-@keyframes pill-blue-exit {
-  0% { transform: translateX(0) scale(1); opacity: 1; }
-  40% { transform: translateX(-5%) scale(1.1); opacity: 1; }
-  100% { transform: translateX(200%) scale(0.3); opacity: 0; }
+@keyframes hand-sway-right {
+  0%,100% { transform:translateY(0) rotate(10deg); }
+  50% { transform:translateY(-12px) rotate(4deg); }
 }
-.pill-container {
-  display:flex;flex-direction:column;align-items:center;gap:2rem;
-  margin:2rem auto;max-width:500px;
+.hands-photo {
+  display:block;margin:0 auto;max-width:520px;width:100%;
+  border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.5);
 }
-.pill {
-  display:flex;align-items:center;gap:1rem;
-  padding:1rem 1.8rem;border-radius:100px;
-  font-family:'Archivo',sans-serif;font-weight:600;
-  font-size:clamp(1.1rem,2.5vw,1.4rem);
-  line-height:1.4;text-align:left;
-  width:100%;box-sizing:border-box;
+#hands-fallback { display:none; }
+.hands-stage {
+  display:flex;gap:1.5rem;justify-content:center;align-items:flex-start;
+  margin:1.5rem auto 1rem;max-width:576px;flex-wrap:wrap;
 }
-.pill--red {
+.hand-card { display:flex;flex-direction:column;align-items:center;gap:1rem; }
+.hand-hold {
+  position:relative;width:200px;height:130px;
+  display:flex;align-items:center;justify-content:center;
+}
+.hand-emoji {
+  font-size:7rem;line-height:1;
+  filter:drop-shadow(0 12px 22px rgba(0,0,0,.45));
+}
+.hand-hold--left .hand-emoji { animation:hand-sway-left 3.5s ease-in-out infinite; }
+.hand-hold--right .hand-emoji { animation:hand-sway-right 3.5s ease-in-out infinite; animation-delay:.4s; }
+.hand-hold .pill--mini {
+  position:absolute;top:36px;left:50%;margin-left:-35px;z-index:2;
+}
+.pill--mini {
+  width:70px;height:32px;border-radius:100px;position:relative;
+  animation:fadeIn 1s ease .4s both;
+}
+.pill--mini::after {
+  content:"";position:absolute;inset:3px 5px;border-radius:100px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 48%);
+}
+.pill--mini--red {
   background:linear-gradient(135deg,#c0392b,#e74c3c);
-  color:#fff;box-shadow:0 0 30px rgba(192,57,43,.4);
-  animation:pill-red-enter 1.2s ease-out forwards;
+  box-shadow:0 4px 14px rgba(0,0,0,.35),0 0 20px rgba(231,76,60,.45);
 }
-.pill--blue {
+.pill--mini--blue {
   background:linear-gradient(135deg,#2980b9,#3498db);
-  color:#fff;box-shadow:0 0 30px rgba(41,128,185,.4);
-  animation:pill-blue-enter 1.2s ease-out forwards;
-  animation-delay:0.3s;
-  opacity:0;
+  box-shadow:0 4px 14px rgba(0,0,0,.35),0 0 20px rgba(52,152,219,.45);
 }
-.pill__icon {
-  font-size:1.8rem;flex-shrink:0;
+.pill-captions {
+  display:flex;gap:1.5rem;justify-content:center;align-items:flex-start;
+  flex-wrap:wrap;max-width:720px;margin:0 auto;
 }
-.pill__text { flex:1; }
+.pill-caption {
+  font-family:'Archivo',sans-serif;font-size:clamp(.9rem,2.1vw,1.1rem);
+  line-height:1.55;color:rgba(246,242,230,.85);text-align:center;
+  max-width:260px;
+}
+.pill-choices {
+  display:flex;gap:2.5rem;justify-content:center;align-items:flex-start;
+  flex-wrap:wrap;
+}
+.pill-choice {
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+}
+.pill-cta {
+  width:120px;height:54px;border-radius:100px;border:none;cursor:pointer;
+  position:relative;display:block;text-decoration:none;
+  animation:pill-cta-enter .9s ease-out .5s both;
+  transition:transform .2s ease, box-shadow .2s ease;
+}
+.pill-cta::after {
+  content:"";position:absolute;inset:4px 7px;border-radius:100px;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.5),rgba(255,255,255,0) 48%);
+}
+.pill-cta:hover { transform:scale(1.08); }
+.pill-cta:active { transform:scale(.95); }
+.pill-cta--red {
+  background:linear-gradient(135deg,#c0392b,#e74c3c);
+  box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 45px rgba(231,76,60,.45);
+}
+.pill-cta--red:hover { box-shadow:0 12px 32px rgba(0,0,0,.45),0 0 60px rgba(231,76,60,.6); }
+.pill-cta--blue {
+  background:linear-gradient(135deg,#2980b9,#3498db);
+  box-shadow:0 8px 24px rgba(0,0,0,.4),0 0 45px rgba(52,152,219,.45);
+}
+.pill-cta--blue:hover { box-shadow:0 12px 32px rgba(0,0,0,.45),0 0 60px rgba(52,152,219,.6); }
 </style>
 
 </head>
@@ -197,21 +244,34 @@
       <div class="splash-badge">Ultimo passo</div>
       <h2 style="font-size:clamp(1.4rem,4vw,2.2rem);">Ti ringrazio per il tempo che mi hai dedicato.</h2>
       <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.3rem);">Il tempo è prezioso e non tutti i progetti riescono a suscitare interesse, curiosità o voglia di approfondire. Per questo, ora ti chiedo semplicemente di fare una scelta.</p>
-      <div class="pill-container">
-        <div class="pill pill--red">
-          <span class="pill__icon">🔴</span>
-          <span class="pill__text"><strong>Pillola rossa:</strong> segui la tua curiosità, entra nel progetto e scopri una nuova possibilità di crescita, miglioramento ed espansione.</span>
+      <img class="hands-photo" src="assets/img/pills-hands.jpg" alt="Mani che offrono la pillola rossa e la pillola blu" onerror="this.style.display='none';document.getElementById('hands-fallback').style.display='flex'">
+      <div id="hands-fallback" class="hands-stage">
+        <div class="hand-card">
+          <div class="hand-hold hand-hold--left">
+            <span class="hand-emoji" aria-hidden="true">🤲</span>
+            <div class="pill--mini pill--mini--red" role="img" aria-label="Pillola rossa"></div>
+          </div>
         </div>
-        <div class="pill pill--blue">
-          <span class="pill__icon">🔵</span>
-          <span class="pill__text"><strong>Pillola blu:</strong> continua serenamente con quello che stavi facendo e prosegui il tuo percorso attuale.</span>
+        <div class="hand-card">
+          <div class="hand-hold hand-hold--right">
+            <span class="hand-emoji" aria-hidden="true">🤲</span>
+            <div class="pill--mini pill--mini--blue" role="img" aria-label="Pillola blu"></div>
+          </div>
         </div>
       </div>
-      <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.2rem);font-style:italic;color:rgba(246,242,230,.7);margin-bottom:1.5rem;">La decisione spetta solo a te.</p>
-      <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <button class="splash-btn" onclick="sessionStorage.setItem('splashDone','1');document.getElementById('splash').classList.add('hide')">🔴 Scelgo la pillola rossa</button>
-        <a class="splash-btn" href="non-serve.html" style="background:transparent;border:1px solid #c8a86b55;color:rgba(246,242,230,.7);">🔵 Scelgo la pillola blu</a>
-      </p>
+      <div class="pill-captions">
+        <p class="pill-caption"><strong>Pillola rossa:</strong> segui la tua curiosità, entra nel progetto e scopri una nuova possibilità di crescita, miglioramento ed espansione.</p>
+        <p class="pill-caption"><strong>Pillola blu:</strong> continua serenamente con quello che stavi facendo e prosegui il tuo percorso attuale.</p>
+      </div>
+      <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.2rem);font-style:italic;color:rgba(246,242,230,.7);margin:1.5rem 0;">La decisione spetta solo a te.</p>
+      <div class="pill-choices">
+        <div class="pill-choice">
+          <button class="pill-cta pill-cta--red" aria-label="Scelgo la pillola rossa" title="Scelgo la pillola rossa" onclick="sessionStorage.setItem('splashDone','1');document.getElementById('splash').classList.add('hide')"></button>
+        </div>
+        <div class="pill-choice">
+          <a class="pill-cta pill-cta--blue" href="non-serve.html" aria-label="Non proseguire" title="Non proseguire"></a>
+        </div>
+      </div>
     </div>
 
   </div>
