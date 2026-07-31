@@ -20,11 +20,12 @@
   position:fixed;inset:0;z-index:9999;
   background:#0d1f1a;
   display:flex;align-items:center;justify-content:center;
+  overflow-y:auto;
   opacity:1;transition:opacity .6s ease;
   font-family:'Archivo',sans-serif;
 }
 #splash.hide { opacity:0;pointer-events:none; }
-.splash-inner { text-align:center;padding:2rem;max-width:640px;width:100%; }
+.splash-inner { text-align:center;padding:2rem;max-width:640px;width:100%;margin:auto; }
 .splash-badge {
   display:inline-block;
   font-size:.85rem;font-weight:600;letter-spacing:.35em;text-transform:uppercase;
@@ -134,7 +135,7 @@
     <!-- Pagina 0 — Intro -->
     <div class="splash-page active" id="splash-p0">
       <div class="splash-badge">Attenzione</div>
-      <h2 style="font-size:clamp(2rem,6vw,3.6rem);">Fate questi <strong>due esperimenti</strong>.</h2>
+      <h2 style="font-size:clamp(2rem,6vw,3.6rem);">Fate questi <strong>tre esperimenti</strong>.</h2>
       <p class="splash-challenge" style="font-size:clamp(1.2rem,3vw,1.5rem);margin-bottom:2.5rem;">Poi decidete se AXIOS fa per voi.<br>Se riuscite a ottenere gli stessi risultati in poco tempo e con semplicità,allora <strong>AXIOS non vi serve</strong>.</p>
       <hr class="splash-divider">
       <button class="splash-btn" onclick="document.getElementById('splash-p0').classList.remove('active');document.getElementById('splash-p1').classList.add('active')">Iniziamo →</button>
@@ -166,12 +167,33 @@
       <p class="splash-answer" style="font-size:clamp(1.3rem,3vw,1.8rem);">Se ci riuscite in 2 minuti, AXIOS non vi serve.</p>
       <p class="splash-sub" style="font-size:clamp(1rem,2.2vw,1.3rem);color:rgba(246,242,230,.7);">Altrimenti, AXIOS fa tutto: ricerca, cross-selling, claim, locandine PDF pronte da stampare.</p>
       <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-        <button class="splash-btn" onclick="document.getElementById('splash-p2').classList.remove('active');document.getElementById('splash-p3').classList.add('active')">Prossimo step →</button>
+        <button class="splash-btn" onclick="document.getElementById('splash-p2').classList.remove('active');document.getElementById('splash-p3').classList.add('active')">Prossimo esperimento →</button>
       </p>
     </div>
 
-    <!-- Pagina 3 — Scelta finale -->
+    <!-- Pagina 3 — Terzo esperimento -->
     <div class="splash-page" id="splash-p3">
+      <div class="splash-badge">3° Esperimento</div>
+      <h2 style="font-size:clamp(1.6rem,4.6vw,2.9rem);">Fine mese: <strong>bolla contro fattura</strong>, riga per riga.</h2>
+      <p class="splash-challenge" style="font-size:clamp(1rem,2.5vw,1.35rem);">Differenze, convenzioni, sconti, rimborsi fatture di acquisto, resi. Esistono diversi profili:</p>
+      <ul class="splash-list" style="font-size:clamp(.9rem,2.2vw,1.25rem);max-width:720px;">
+        <li><strong style="color:#f6f2e6;">Base</strong> — cartaceo: si stampa tutto e si controlla riga per riga, si segnano le anomalie su carta a penna e si chiamano le ditte per spiegazioni</li>
+        <li><strong style="color:#f6f2e6;">Medio</strong> — macro aree e importi importanti, sempre cartaceo o a volte PDF a video sul pc</li>
+        <li><strong style="color:#f6f2e6;">Alto</strong> — controllo veloce di tutte le voci, sempre cartaceo o video</li>
+        <li><strong style="color:#f6f2e6;">Avanzato</strong> — file PDF, Excel e uso di strumenti online, come per esempio chatbot tipo ChatGPT. Per quest'ultimo, dal 2 agosto bisogna adeguarsi all'AI Act e alle norme GDPR già in vigore: un consiglio, dare una guardata al regolamento</li>
+        <li><strong style="color:#f6f2e6;">Esperto</strong> — AI locale con LLM e agenti</li>
+      </ul>
+      <p class="splash-challenge" style="font-size:clamp(1rem,2.4vw,1.35rem);">Il vero problema qui è il <strong>tempo</strong>: da <strong>giorni</strong> (livello base) a <strong>poche ore</strong> (avanzato) a <strong>pochi minuti</strong> (esperto).</p>
+      <hr class="splash-divider">
+      <p class="splash-answer" style="font-size:clamp(1.3rem,3vw,1.8rem);">Se lo fate a qualsiasi livello — da base ad avanzato — in pochi minuti, report con tutte le anomalie compreso, AXIOS non vi serve.</p>
+      <p class="splash-sub" style="font-size:clamp(1rem,2.2vw,1.3rem);color:rgba(246,242,230,.7);">Altrimenti, AXIOS è solo livello esperto: rispetta le norme GDPR e AI Act, controllo completo in locale coi vostri dati, in pochi minuti, con report e link alle fonti.</p>
+      <p style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+        <button class="splash-btn" onclick="document.getElementById('splash-p3').classList.remove('active');document.getElementById('splash-p4').classList.add('active')">Prossimo step →</button>
+      </p>
+    </div>
+
+    <!-- Pagina 4 — Scelta finale -->
+    <div class="splash-page" id="splash-p4">
       <div class="splash-badge">Ultimo passo</div>
       <h2 style="font-size:clamp(1.4rem,4vw,2.2rem);">Ti ringrazio per il tempo che mi hai dedicato.</h2>
       <p class="splash-challenge" style="font-size:clamp(1rem,2.2vw,1.3rem);">Il tempo è prezioso e non tutti i progetti riescono a suscitare interesse, curiosità o voglia di approfondire. Per questo, ora ti chiedo semplicemente di fare una scelta.</p>
