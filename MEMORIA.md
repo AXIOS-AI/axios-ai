@@ -39,7 +39,7 @@
 
 1. **Prima di ogni modifica**: leggere MEMORIA.md + verificare stato git
 2. **Modificare solo i file necessari** — nessun refactoring non richiesto
-3. **Dopo ogni modifica**: testare visivamente, fare commit + push
+3. **Dopo ogni modifica**: testare visivamente, fare commit + push **SU ENTRAMBI I BRANCH: main E gh-pages** (il sito live su GitHub Pages è servito da `gh-pages`, non da `main` — se si pusha solo main la modifica NON appare online). Procedura: `git checkout gh-pages && git merge main && git push origin gh-pages && git checkout main`
 4. **Commit**: messaggi chiari in italiano, prefisso tipo (fix, feat, style, etc.)
 5. **Stili**: variabili CSS in `:root` in cima a style.css — cambiarle lì per aggiornare tutto
 6. **Design responsive**: testare sempre su mobile (viewport < 600px)
